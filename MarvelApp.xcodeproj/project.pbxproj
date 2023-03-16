@@ -11,7 +11,7 @@
 		6E2E6CA629C383E300ABFB8B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2E6CA529C383E300ABFB8B /* SceneDelegate.swift */; };
 		6E2E6CAD29C383E400ABFB8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E2E6CAC29C383E400ABFB8B /* Assets.xcassets */; };
 		6E2E6CB029C383E400ABFB8B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E2E6CAE29C383E400ABFB8B /* LaunchScreen.storyboard */; };
-		6E2E6CBB29C38C1100ABFB8B /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 6E2E6CBA29C38C1100ABFB8B /* Networking */; };
+		6E2E6CBE29C390BC00ABFB8B /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 6E2E6CBD29C390BC00ABFB8B /* Networking */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E2E6CBB29C38C1100ABFB8B /* Networking in Frameworks */,
+				6E2E6CBE29C390BC00ABFB8B /* Networking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +91,7 @@
 				6E2E6C9C29C383E300ABFB8B /* Sources */,
 				6E2E6C9D29C383E300ABFB8B /* Frameworks */,
 				6E2E6C9E29C383E300ABFB8B /* Resources */,
+				6E2E6CBC29C3908600ABFB8B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -98,7 +99,7 @@
 			);
 			name = MarvelApp;
 			packageProductDependencies = (
-				6E2E6CBA29C38C1100ABFB8B /* Networking */,
+				6E2E6CBD29C390BC00ABFB8B /* Networking */,
 			);
 			productName = MarvelApp;
 			productReference = 6E2E6CA029C383E300ABFB8B /* MarvelApp.app */;
@@ -148,6 +149,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6E2E6CBC29C3908600ABFB8B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6E2E6C9C29C383E300ABFB8B /* Sources */ = {
@@ -367,7 +388,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6E2E6CBA29C38C1100ABFB8B /* Networking */ = {
+		6E2E6CBD29C390BC00ABFB8B /* Networking */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Networking;
 		};
