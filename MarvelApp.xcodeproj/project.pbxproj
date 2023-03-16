@@ -9,21 +9,19 @@
 /* Begin PBXBuildFile section */
 		6E2E6CA429C383E300ABFB8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2E6CA329C383E300ABFB8B /* AppDelegate.swift */; };
 		6E2E6CA629C383E300ABFB8B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2E6CA529C383E300ABFB8B /* SceneDelegate.swift */; };
-		6E2E6CA829C383E300ABFB8B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2E6CA729C383E300ABFB8B /* ViewController.swift */; };
-		6E2E6CAB29C383E300ABFB8B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E2E6CA929C383E300ABFB8B /* Main.storyboard */; };
 		6E2E6CAD29C383E400ABFB8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E2E6CAC29C383E400ABFB8B /* Assets.xcassets */; };
 		6E2E6CB029C383E400ABFB8B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E2E6CAE29C383E400ABFB8B /* LaunchScreen.storyboard */; };
+		6E2E6CBB29C38C1100ABFB8B /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 6E2E6CBA29C38C1100ABFB8B /* Networking */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6E2E6CA029C383E300ABFB8B /* MarvelApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E2E6CA329C383E300ABFB8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6E2E6CA529C383E300ABFB8B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		6E2E6CA729C383E300ABFB8B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		6E2E6CAA29C383E300ABFB8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6E2E6CAC29C383E400ABFB8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6E2E6CAF29C383E400ABFB8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6E2E6CB129C383E400ABFB8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6E2E6CB829C3889200ABFB8B /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E2E6CBB29C38C1100ABFB8B /* Networking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,8 +39,10 @@
 		6E2E6C9729C383E300ABFB8B = {
 			isa = PBXGroup;
 			children = (
+				6E2E6CB829C3889200ABFB8B /* Networking */,
 				6E2E6CA229C383E300ABFB8B /* MarvelApp */,
 				6E2E6CA129C383E300ABFB8B /* Products */,
+				6E2E6CB929C38C1100ABFB8B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +57,28 @@
 		6E2E6CA229C383E300ABFB8B /* MarvelApp */ = {
 			isa = PBXGroup;
 			children = (
+				6E2E6CB729C387FA00ABFB8B /* Core */,
+			);
+			path = MarvelApp;
+			sourceTree = "<group>";
+		};
+		6E2E6CB729C387FA00ABFB8B /* Core */ = {
+			isa = PBXGroup;
+			children = (
 				6E2E6CA329C383E300ABFB8B /* AppDelegate.swift */,
 				6E2E6CA529C383E300ABFB8B /* SceneDelegate.swift */,
-				6E2E6CA729C383E300ABFB8B /* ViewController.swift */,
-				6E2E6CA929C383E300ABFB8B /* Main.storyboard */,
 				6E2E6CAC29C383E400ABFB8B /* Assets.xcassets */,
 				6E2E6CAE29C383E400ABFB8B /* LaunchScreen.storyboard */,
 				6E2E6CB129C383E400ABFB8B /* Info.plist */,
 			);
-			path = MarvelApp;
+			path = Core;
+			sourceTree = "<group>";
+		};
+		6E2E6CB929C38C1100ABFB8B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +97,9 @@
 			dependencies = (
 			);
 			name = MarvelApp;
+			packageProductDependencies = (
+				6E2E6CBA29C38C1100ABFB8B /* Networking */,
+			);
 			productName = MarvelApp;
 			productReference = 6E2E6CA029C383E300ABFB8B /* MarvelApp.app */;
 			productType = "com.apple.product-type.application";
@@ -127,7 +144,6 @@
 			files = (
 				6E2E6CB029C383E400ABFB8B /* LaunchScreen.storyboard in Resources */,
 				6E2E6CAD29C383E400ABFB8B /* Assets.xcassets in Resources */,
-				6E2E6CAB29C383E300ABFB8B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +154,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E2E6CA829C383E300ABFB8B /* ViewController.swift in Sources */,
 				6E2E6CA429C383E300ABFB8B /* AppDelegate.swift in Sources */,
 				6E2E6CA629C383E300ABFB8B /* SceneDelegate.swift in Sources */,
 			);
@@ -147,14 +162,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		6E2E6CA929C383E300ABFB8B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6E2E6CAA29C383E300ABFB8B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		6E2E6CAE29C383E400ABFB8B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -287,9 +294,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = A93689JNSR;
+				DEVELOPMENT_TEAM = 7X3PHL6VGW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MarvelApp/Info.plist;
+				INFOPLIST_FILE = MarvelApp/Core/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -315,9 +322,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = A93689JNSR;
+				DEVELOPMENT_TEAM = 7X3PHL6VGW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MarvelApp/Info.plist;
+				INFOPLIST_FILE = MarvelApp/Core/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -358,6 +365,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6E2E6CBA29C38C1100ABFB8B /* Networking */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Networking;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6E2E6C9829C383E300ABFB8B /* Project object */;
 }
