@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+struct Price: Codable {
+
+    // MARK: - Properties
+    let type: String
+    let price: Float
+}

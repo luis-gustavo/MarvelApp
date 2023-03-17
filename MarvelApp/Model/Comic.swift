@@ -13,6 +13,8 @@ struct Comic: Codable, Hashable {
     let id: Int
     let title: String
     let thumbnail: Image
+    let issueNumber: Double
+    let prices: [Price]
 
     // MARK: - Hashable
     static func == (lhs: Comic, rhs: Comic) -> Bool {
@@ -23,5 +25,6 @@ struct Comic: Codable, Hashable {
         hasher.combine(id)
         hasher.combine(title)
         hasher.combine(thumbnail.url)
+        hasher.combine(issueNumber)
     }
 }

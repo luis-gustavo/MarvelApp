@@ -21,9 +21,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         registerServices()
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = viewFactory.rootViewController
+        window.rootViewController = appRouter.rootViewController
         window.makeKeyAndVisible()
-        viewFactory.showTabBar()
+        appRouter.showTabBar()
         self.window = window
     }
 
@@ -35,9 +35,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private enum AppRoot {
     static let rootViewController = UINavigationController()
-    static let viewFactory = AppCoordinator(rootViewController: rootViewController)
+    static let appRouter = AppRouter(rootViewController: rootViewController)
 }
 
 private extension SceneDelegate {
-    var viewFactory: ViewFactory { AppRoot.viewFactory }
+    var appRouter: AppRouterProtocol { AppRoot.appRouter }
 }
