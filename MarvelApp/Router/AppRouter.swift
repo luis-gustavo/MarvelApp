@@ -1,5 +1,5 @@
 //
-//  AppCoordinator.swift
+//  AppRouter.swift
 //  MarvelApp
 //
 //  Created by Luis Gustavo on 17/03/23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AppCoordinator: AppRouterProtocol {
+final class AppRouter: AppRouterProtocol {
 
     // MARK: - Properties
     var navigationViewController: UINavigationController?

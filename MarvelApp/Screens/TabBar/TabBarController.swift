@@ -9,27 +9,32 @@ import UIKit
 
 final class TabBarController: UITabBarController {
 
-    // MARK: - ViewDidLoad
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupTabs()
-    }
-}
-
-// MARK: - Private methods
-private extension TabBarController {
-    func setupTabs() {
-        let characterListViewController = ComicListViewController(
-            viewModel: .init()
-        )
-        characterListViewController.navigationItem.largeTitleDisplayMode = .automatic
-        let characterListNavigationController = UINavigationController(rootViewController: characterListViewController)
-        characterListNavigationController.navigationBar.prefersLargeTitles = true
-        characterListNavigationController.tabBarItem = UITabBarItem(
-            title: "Characters",
-            image: .init(systemName: "person"),
+    // MARK: - Properties
+    private let viewFactory: AppRouterProtocol
+    private(set) lazy var comicListViewController: ComicListViewController = {
+        let viewController = ComicListViewController(viewModel: .init(router: viewFactory))
+        viewController.navigationItem.largeTitleDisplayMode = .automatic
+        return viewController
+    }()
+    private(set) lazy var comicListNavigationController: UINavigationController = {
+        let navigationController = UINavigationController(rootViewController: comicListViewController)
+        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.tabBarItem = UITabBarItem(
+            title: TabBarPage.comics.title,
+            image: TabBarPage.comics.image,
             tag: 1
         )
-        setViewControllers([characterListNavigationController], animated: true)
+        return navigationController
+    }()
+
+    // MARK: - Inits
+    init(viewFactory: AppRouterProtocol) {
+        self.viewFactory = viewFactory
+        super.init(nibName: nil, bundle: nil)
+        setViewControllers([comicListNavigationController], animated: true)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

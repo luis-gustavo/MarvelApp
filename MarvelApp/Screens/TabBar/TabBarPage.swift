@@ -8,12 +8,19 @@
 import UIKit
 
 enum TabBarPage: CaseIterable {
-    case characters
+    case comics
 
     var title: String {
         switch self {
-        case .characters:
-            return "Characters"
+        case .comics:
+            return "Comics"
+        }
+    }
+
+    var image: UIImage? {
+        switch self {
+        case .comics:
+            return .init(systemName: "magazine")
         }
     }
 }
