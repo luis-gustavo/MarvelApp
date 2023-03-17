@@ -8,19 +8,19 @@
 import Networking
 import UIKit
 
-final class CharacterListViewController: UIViewController {
+final class ComicListViewController: UIViewController {
 
     // MARK: - Properties
-    private let viewModel: CharacterListViewModel
+    private let viewModel: ComicListViewModel
 
     // MARK: - UI Properties
-    private lazy var characterListView: CharacterListView = {
-        let view = CharacterListView()
+    private lazy var comicListView: ComicListView = {
+        let view = ComicListView(viewModel: viewModel)
         return view
     }()
 
     // MARK: - Inits
-    init(viewModel: CharacterListViewModel) {
+    init(viewModel: ComicListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -31,7 +31,7 @@ final class CharacterListViewController: UIViewController {
 
     // MARK: - loadView
     override func loadView() {
-        view = characterListView
+        view = comicListView
         title = "Characters"
     }
 }

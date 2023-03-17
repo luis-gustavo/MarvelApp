@@ -7,16 +7,16 @@
 
 import UIKit
 
-final class CharacterListView: UIView {
+final class ComicListView: UIView {
 
     // MARK: - Properties
+    private let viewModel: ComicListViewModel
 
     // MARK: - UI Properties
     private let spinner: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(style: .large)
         view.hidesWhenStopped = true
         view.startAnimating()
-        view.isHidden = true
         return view
     }()
 
@@ -25,24 +25,31 @@ final class CharacterListView: UIView {
         layout.scrollDirection = .vertical
         layout.sectionInset = .init(top: 0, left: 16, bottom: 0, right: 16)
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        view.backgroundColor = .green
-//        view.isHidden = true
-//        view.alpha = 0
+        view.isHidden = true
+        view.alpha = 0
+        view.allowsSelection = true
+        view.allowsMultipleSelection = false
         view.register(
-            CharacterCollectionViewCell.self,
-            forCellWithReuseIdentifier: CharacterCollectionViewCell.identifier
+            ComicCollectionViewCell.self,
+            forCellWithReuseIdentifier: ComicCollectionViewCell.identifier
         )
-
-        // TODO: - Rever isso
+        view.register(
+            FooterLoadingCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: FooterLoadingCollectionReusableView.identifier
+        )
         view.delegate = self
         view.dataSource = self
         return view
     }()
 
     // MARK: - Inits
-    init() {
+    init(viewModel: ComicListViewModel) {
+        self.viewModel = viewModel
+        self.viewModel.fetchComics()
         super.init(frame: .zero)
         setupViewConfiguration()
+        self.viewModel.delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -51,7 +58,7 @@ final class CharacterListView: UIView {
 }
 
 // MARK: - ViewCodable
-extension CharacterListView: ViewCodable {
+extension ComicListView: ViewCodable {
     func buildViewHierarchy() {
         addSubviews(
             collectionView,
@@ -75,9 +82,9 @@ extension CharacterListView: ViewCodable {
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
-extension CharacterListView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension ComicListView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        20
+        viewModel.cellViewModels.count
     }
 
     func collectionView(
@@ -85,16 +92,13 @@ extension CharacterListView: UICollectionViewDataSource, UICollectionViewDelegat
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: CharacterCollectionViewCell.identifier,
+            withReuseIdentifier: ComicCollectionViewCell.identifier,
             for: indexPath
-        ) as? CharacterCollectionViewCell else {
+        ) as? ComicCollectionViewCell else {
             return .init()
         }
-        let viewModel = CharacterCollectionViewCellViewModel(
-            name: "Marvel Previews (2017)",
-            imageUrl: .init(string: "https://i.annihil.us/u/prod/marvel/i/mg/c/80/5e3d7536c8ada.jpg")
-        )
-        cell.configure(with: viewModel)
+        let cellViewModel = viewModel.cellViewModels[indexPath.item]
+        cell.configure(with: cellViewModel)
         return cell
     }
 
@@ -109,5 +113,72 @@ extension CharacterListView: UICollectionViewDataSource, UICollectionViewDelegat
             width: width,
             height: width * 1.5
         )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionFooter else {
+            return UICollectionReusableView()
+        }
+
+        let footer = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: FooterLoadingCollectionReusableView.identifier,
+            for: indexPath)
+
+        return footer
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForFooterInSection section: Int
+    ) -> CGSize {
+        guard viewModel.showLoadMore else {
+            return .zero
+        }
+        return .init(width: collectionView.frame.width, height: 100)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard viewModel.showLoadMore,
+              !viewModel.isLoadingMore else { return }
+        let yOffset = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let scrollViewFixedHeight = scrollView.frame.size.height
+
+        if yOffset >= (contentHeight - scrollViewFixedHeight - 120) {
+            viewModel.fetchAdditionalComics()
+        }
+    }
+}
+
+// MARK: - ComicListViewModelDelegate
+extension ComicListView: ComicListViewModelDelegate {
+    func loadedInitialComics() {
+        spinner.stopAnimating()
+        collectionView.isHidden = false
+        collectionView.reloadData()
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            self?.collectionView.alpha = 1
+        }
+    }
+
+    func loadedMoreComics(withOriginal originalCount: Int, andNewCount newCount: Int) {
+        let total = originalCount + newCount
+        let startingIndex = total - newCount
+        let indexPathToAdd: [IndexPath] = Array(startingIndex..<(startingIndex + newCount)).compactMap {
+            return IndexPath(row: $0, section: 0)
+        }
+        collectionView.performBatchUpdates {
+            self.collectionView.insertItems(at: indexPathToAdd)
+        }
     }
 }
