@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+struct Image: Codable {
+
+    // MARK: - Properties
+    var url: URL? { URL(string: "\(path).\(`extension`)") }
+    private let path: String
+    private let `extension`: String
+}
