@@ -36,7 +36,6 @@
 		6E376A0329C4A2F40072B818 /* ComicDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E376A0229C4A2F40072B818 /* ComicDetailView.swift */; };
 		6E376A0529C4A5450072B818 /* ComicDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E376A0429C4A5450072B818 /* ComicDetailViewModel.swift */; };
 		6E376A0729C4A6F10072B818 /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E376A0629C4A6F10072B818 /* Price.swift */; };
-		6E376A0929C4AB6F0072B818 /* ComicLisRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E376A0829C4AB6F0072B818 /* ComicLisRouterProtocol.swift */; };
 		6E376A0C29C4AE740072B818 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E376A0B29C4AE740072B818 /* AppRouter.swift */; };
 		6E376A0E29C4E50B0072B818 /* AppRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E376A0D29C4E50B0072B818 /* AppRouterProtocol.swift */; };
 		6E376A1029C4E5180072B818 /* ComicListRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E376A0F29C4E5180072B818 /* ComicListRouterProtocol.swift */; };
@@ -74,7 +73,6 @@
 		6E376A0229C4A2F40072B818 /* ComicDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicDetailView.swift; sourceTree = "<group>"; };
 		6E376A0429C4A5450072B818 /* ComicDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicDetailViewModel.swift; sourceTree = "<group>"; };
 		6E376A0629C4A6F10072B818 /* Price.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
-		6E376A0829C4AB6F0072B818 /* ComicLisRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicLisRouterProtocol.swift; sourceTree = "<group>"; };
 		6E376A0B29C4AE740072B818 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		6E376A0D29C4E50B0072B818 /* AppRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouterProtocol.swift; sourceTree = "<group>"; };
 		6E376A0F29C4E5180072B818 /* ComicListRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicListRouterProtocol.swift; sourceTree = "<group>"; };
@@ -156,7 +154,6 @@
 				6E3769FC29C4A2B40072B818 /* Cell */,
 				6E3769FD29C4A2C10072B818 /* CellFooter */,
 				6E3769FE29C4A2CB0072B818 /* Provider */,
-				6E376A0A29C4AB9D0072B818 /* Router */,
 			);
 			path = ComicsList;
 			sourceTree = "<group>";
@@ -286,14 +283,6 @@
 			path = ComicDetail;
 			sourceTree = "<group>";
 		};
-		6E376A0A29C4AB9D0072B818 /* Router */ = {
-			isa = PBXGroup;
-			children = (
-				6E376A0829C4AB6F0072B818 /* ComicLisRouterProtocol.swift */,
-			);
-			path = Router;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -414,7 +403,6 @@
 				6E3769F329C4799C0072B818 /* FooterLoadingCollectionView.swift in Sources */,
 				6E2E6CA629C383E300ABFB8B /* SceneDelegate.swift in Sources */,
 				6E2E6CD729C3AFD900ABFB8B /* TabBarPage.swift in Sources */,
-				6E376A0929C4AB6F0072B818 /* ComicLisRouterProtocol.swift in Sources */,
 				6E2E6CCD29C39D3F00ABFB8B /* ViewCodable.swift in Sources */,
 				6E3769F129C470AE0072B818 /* ComicResponse.swift in Sources */,
 				6E376A0529C4A5450072B818 /* ComicDetailViewModel.swift in Sources */,

@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol ComicListViewDelegate: AnyObject {
+    func didSelectComic(at position: Int)
+}
+
 final class ComicListView: UIView {
 
     // MARK: - Properties
+    weak var delegate: ComicListViewDelegate?
     private let viewModel: ComicListViewModel
 
     // MARK: - UI Properties
@@ -144,7 +149,7 @@ extension ComicListView: UICollectionViewDataSource, UICollectionViewDelegate, U
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
+        delegate?.didSelectComic(at: indexPath.item)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

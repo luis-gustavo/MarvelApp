@@ -1,5 +1,5 @@
 //
-//  CharacterListViewController.swift
+//  ComicsListViewController.swift
 //  MarvelApp
 //
 //  Created by Luis Gustavo on 16/03/23.
@@ -16,6 +16,7 @@ final class ComicListViewController: UIViewController {
     // MARK: - UI Properties
     private lazy var comicListView: ComicListView = {
         let view = ComicListView(viewModel: viewModel)
+        view.delegate = self
         return view
     }()
 
@@ -32,6 +33,13 @@ final class ComicListViewController: UIViewController {
     // MARK: - loadView
     override func loadView() {
         view = comicListView
-        title = "Characters"
+        title = TabBarPage.comics.title
+    }
+}
+
+// MARK: - ComicListViewDelegate
+extension ComicListViewController: ComicListViewDelegate {
+    func didSelectComic(at position: Int) {
+        viewModel.showComicDetail(at: position)
     }
 }

@@ -24,6 +24,7 @@ final class ComicListViewModel {
     private var nextOffset: Int {
         showLoadMore ? offset + limit : offset
     }
+    private let router: ComicListRouterProtocol
     private(set) var isLoadingMore = false
     private let comicProvider = ComicProvider()
     private let limit = 20
@@ -46,7 +47,15 @@ final class ComicListViewModel {
     }
     private(set) var cellViewModels: [ComicCollectionViewCellViewModel] = []
 
-    // MARK: - CharacterListViewModelProtocol
+    // MARK: - Init
+    init(router: ComicListRouterProtocol) {
+        self.router = router
+    }
+}
+
+// MARK: - Internal methods
+
+extension ComicListViewModel {
     func fetchComics() {
         comicProvider.fetchComics(offset: nextOffset, limit: limit) { [weak self] result in
             switch result {
@@ -90,11 +99,10 @@ final class ComicListViewModel {
             }
         }
     }
-}
 
-extension Sequence where Element: Hashable {
-    func unique() -> [Element] {
-        var set = Set<Element>()
-        return filter { set.insert($0).inserted }
+    func showComicDetail(at index: Int) {
+        let cellViewModel = cellViewModels[index]
+        guard let comic = comics.first(where: { $0.id == cellViewModel.id }) else { return }
+        router.showComicDetail(comic: comic)
     }
 }
