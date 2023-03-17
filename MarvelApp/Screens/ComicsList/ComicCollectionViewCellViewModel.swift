@@ -6,38 +6,46 @@
 //
 
 import Foundation
+import Service
 
-final class CharacterCollectionViewCellViewModel {
+final class ComicCollectionViewCellViewModel: Hashable {
 
     // MARK: - Properties
-    let name: String
+    let title: String
+    let id: Int
     private let imageUrl: URL?
+    private let imageLoader: ImageLoaderProtocol = Services.make(for: ImageLoaderProtocol.self)
 
     // MARK: - Init
     init(
-        name: String,
+        title: String,
+        id: Int,
         imageUrl: URL?
     ) {
-        self.name = name
+        self.title = title
+        self.id = id
         self.imageUrl = imageUrl
     }
 }
 
 // MARK: - Internal methods
-extension CharacterCollectionViewCellViewModel {
+extension ComicCollectionViewCellViewModel {
     func fetchImage(_ completion: @escaping (Result<Data, Error>) -> Void) {
         guard let url = imageUrl else {
             completion(.failure(URLError(.badURL)))
             return
         }
-        let request = URLRequest(url: url)
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data, error == nil else {
-                completion(.failure(error ?? URLError(.badServerResponse)))
-                return
-            }
-            completion(.success(data))
-        }
-        task.resume()
+        imageLoader.downloadImage(url, completion)
+    }
+
+    // MARK: - Hashable
+    static func == (lhs: ComicCollectionViewCellViewModel, rhs: ComicCollectionViewCellViewModel) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(id)
+        hasher.combine(imageUrl)
     }
 }

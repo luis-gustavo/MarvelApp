@@ -7,14 +7,10 @@
 
 import UIKit
 
-final class CharacterCollectionViewCell: UICollectionViewCell {
+final class ComicCollectionViewCell: UICollectionViewCell {
 
     // MARK: - UI Properties
-    private let imageView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFit
-        return view
-    }()
+    private let imageView = UIImageView()
 
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -24,6 +20,7 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
         )
         label.textColor = .label
         label.textAlignment = .center
+        label.numberOfLines = 0
         return label
     }()
 
@@ -39,7 +36,7 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
 }
 
 // MARK: - ViewCodable
-extension CharacterCollectionViewCell: ViewCodable {
+extension ComicCollectionViewCell: ViewCodable {
     func buildViewHierarchy() {
         contentView.addSubviews(
             imageView,
@@ -54,8 +51,8 @@ extension CharacterCollectionViewCell: ViewCodable {
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: nameLabel.topAnchor),
 
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
+            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
             nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             nameLabel.heightAnchor.constraint(equalToConstant: 50)
         ])
@@ -67,9 +64,9 @@ extension CharacterCollectionViewCell: ViewCodable {
 }
 
 // MARK: - Internal methods
-extension CharacterCollectionViewCell {
-    func configure(with viewModel: CharacterCollectionViewCellViewModel) {
-        nameLabel.text = viewModel.name
+extension ComicCollectionViewCell {
+    func configure(with viewModel: ComicCollectionViewCellViewModel) {
+        nameLabel.text = viewModel.title
         viewModel.fetchImage { [weak self] result in
             switch result {
             case let .success(data):
