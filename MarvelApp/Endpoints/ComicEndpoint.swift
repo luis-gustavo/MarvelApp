@@ -17,25 +17,25 @@ private struct Constants {
 
 enum ComicEndpoint: EndPoint {
 
-    case characters
+    case comics(offset: Int, limit: Int)
 
     var url: URL? {
         switch self {
-        case .characters:
+        case .comics:
             return URL(string: "\(Constants.baseUrl)/comics")
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .characters:
+        case .comics:
             return .get
         }
     }
 
     var headers: [String: String] {
         switch self {
-        case .characters:
+        case .comics:
             return [:]
         }
     }
@@ -44,16 +44,23 @@ enum ComicEndpoint: EndPoint {
         let timestamp = "\(Int64(Date().timeIntervalSince1970 * 1000))"
         let hash = md5("\(timestamp)\(Constants.privateKey)\(Constants.publicKey)")
         let apiKey = Constants.publicKey
-        return [
+        var parameters = [
             "ts": timestamp,
             "apikey": apiKey,
             "hash": hash
         ]
+
+        switch self {
+        case let .comics(offset, limit):
+            parameters["limit"] = "\(limit)"
+            parameters["offset"] = "\(offset)"
+            return parameters
+        }
     }
 
     var body: Data? {
         switch self {
-        case .characters:
+        case .comics:
             return nil
         }
     }
