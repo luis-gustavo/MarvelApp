@@ -33,6 +33,13 @@ final class ComicCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - prepareForReuse
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+        nameLabel.text = nil
+    }
 }
 
 // MARK: - ViewCodable

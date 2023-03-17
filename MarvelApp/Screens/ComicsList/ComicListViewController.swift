@@ -24,6 +24,11 @@ final class ComicListViewController: UIViewController {
     init(viewModel: ComicListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .search,
+            target: self,
+            action: #selector(didTapSearch)
+        )
     }
 
     required init?(coder: NSCoder) {
@@ -41,5 +46,12 @@ final class ComicListViewController: UIViewController {
 extension ComicListViewController: ComicListViewDelegate {
     func didSelectComic(at position: Int) {
         viewModel.showComicDetail(at: position)
+    }
+}
+
+// MARK: - Targets
+private extension ComicListViewController {
+    @objc func didTapSearch() {
+        viewModel.showSearch()
     }
 }

@@ -16,6 +16,15 @@ extension AppRouterProtocol {
     func showComicDetail(comic: Comic) {
         let viewModel = ComicDetailViewModel(comic: comic)
         let viewController = ComicDetailViewController(viewModel: viewModel)
+        viewController.navigationItem.largeTitleDisplayMode = .never
+        viewController.hidesBottomBarWhenPushed = true
+        navigationViewController?.pushViewController(viewController, animated: true)
+    }
+
+    func showSearch() {
+        let viewModel = SearchViewModel()
+        let viewController = SearchViewController(viewModel: viewModel)
+        viewController.navigationItem.largeTitleDisplayMode = .never
         viewController.hidesBottomBarWhenPushed = true
         navigationViewController?.pushViewController(viewController, animated: true)
     }

@@ -57,7 +57,8 @@ final class ComicListViewModel {
 
 extension ComicListViewModel {
     func fetchComics() {
-        comicProvider.fetchComics(offset: nextOffset, limit: limit) { [weak self] result in
+        let queryParameters = ComicQueryParameters(offset: offset, limit: limit)
+        comicProvider.fetchComics(queryParameters: queryParameters) { [weak self] result in
             switch result {
             case let .success(success):
                 for item in success.data.results {
@@ -78,7 +79,8 @@ extension ComicListViewModel {
     func fetchAdditionalComics() {
         guard !isLoadingMore else { return }
         isLoadingMore = true
-        comicProvider.fetchComics(offset: nextOffset, limit: limit) { [weak self] result in
+        let queryParameters = ComicQueryParameters(offset: offset, limit: limit)
+        comicProvider.fetchComics(queryParameters: queryParameters) { [weak self] result in
             switch result {
             case let .success(success):
                 let originalCount = self?.comics.count ?? 0
@@ -104,5 +106,9 @@ extension ComicListViewModel {
         let cellViewModel = cellViewModels[index]
         guard let comic = comics.first(where: { $0.id == cellViewModel.id }) else { return }
         router.showComicDetail(comic: comic)
+    }
+
+    func showSearch() {
+        router.showSearch()
     }
 }
