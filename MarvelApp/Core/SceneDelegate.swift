@@ -21,11 +21,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         registerServices()
         let window = UIWindow(windowScene: windowScene)
-        let navigationController = UINavigationController()
-        let mainCoordinator = MainCoordinator(navigationController: navigationController)
-        window.rootViewController = navigationController
+        window.rootViewController = appRouter.rootViewController
         window.makeKeyAndVisible()
-        mainCoordinator.start()
+        appRouter.showTabBar()
         self.window = window
     }
 
@@ -33,4 +31,13 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Services.register(URLSessionNetworkingProtocol.self) { URLSessionNetworking.shared }
         Services.register(ImageLoaderProtocol.self) { ImageLoader.shared }
     }
+}
+
+private enum AppRoot {
+    static let rootViewController = UINavigationController()
+    static let appRouter = AppRouter(rootViewController: rootViewController)
+}
+
+private extension SceneDelegate {
+    var appRouter: AppRouterProtocol { AppRoot.appRouter }
 }
