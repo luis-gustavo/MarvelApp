@@ -6,3 +6,17 @@
 //
 
 import Foundation
+
+final class ComicDetailViewModel {
+
+    // MARK: - Properties
+    var title: String { comic.title }
+    var imageUrl: URL? { comic.thumbnail.url }
+    var price: String { comic.prices.map { "\($0.type): $\($0.price)" }.joined(separator: "\n") }
+    private let comic: Comic
+
+    // MARK: - Inits
+    init(comic: Comic) {
+        self.comic = comic
+    }
+}
