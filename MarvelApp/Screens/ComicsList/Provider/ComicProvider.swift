@@ -15,8 +15,8 @@ final class ComicProvider {
     private let networkService: URLSessionNetworkingProtocol = Services.make(for: URLSessionNetworkingProtocol.self)
 
     // MARK: - ComicProviderProtocol
-    func fetchComics(offset: Int, limit: Int, _ completion: @escaping (Result<ComicResponse, NetworkError>) -> Void) {
-        networkService.request(endPoint: ComicEndpoint.comics(offset: offset, limit: limit)) { result in
+    func fetchComics(queryParameters: ComicQueryParameters, _ completion: @escaping (Result<ComicResponse, NetworkError>) -> Void) {
+        networkService.request(endPoint: ComicEndpoint.comics(queryParameters: queryParameters)) { result in
             switch result {
             case let .success(success):
                 do {

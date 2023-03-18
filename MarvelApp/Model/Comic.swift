@@ -13,7 +13,7 @@ struct Comic: Codable, Hashable {
     let id: Int
     let title: String
     let thumbnail: Image
-    let issueNumber: Double
+    let issueNumber: Int
     let prices: [Price]
 
     // MARK: - Hashable

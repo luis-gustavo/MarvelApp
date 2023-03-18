@@ -1,38 +1,43 @@
 //
-//  CharacterListViewModel.swift
+//  SearchViewModel.swift
 //  MarvelApp
 //
-//  Created by Luis Gustavo on 16/03/23.
+//  Created by Luis Gustavo on 17/03/23.
 //
 
 import Foundation
-import Networking
-import Service
 
-protocol ComicListViewModelDelegate: AnyObject {
-    func loadedInitialComics()
+protocol SearchViewModelDelegate: AnyObject {
+    func loadedComics()
     func loadedMoreComics(withOriginal originalCount: Int, andNewCount newCount: Int)
+    func changedState(_ state: SearchViewModel.SearchState)
 }
 
-final class ComicListViewModel {
+final class SearchViewModel {
+
+    // MARK: - SearchState
+    enum SearchState {
+        case idle, fetching, results
+    }
 
     // MARK: - Properties
-    weak var delegate: ComicListViewModelDelegate?
-    var showLoadMore: Bool {
-        offset + count < total
+    weak var delegate: SearchViewModelDelegate?
+    private var state: SearchState = .idle {
+        didSet {
+            delegate?.changedState(state)
+        }
     }
-    private var nextOffset: Int {
-        showLoadMore ? offset + limit : offset
-    }
-    private let router: ComicListRouterProtocol
     private(set) var isLoadingMore = false
-    private let comicProvider = ComicProvider()
-    private let limit = 20
-    private var count = 0
+    private let provider = ComicProvider()
+    private var searchText = ""
+    private var year: Int?
     private var offset = 0
+    private var count = 0
     private var total = 0
+    private let limit = 20
     private var comics = Set<Comic>() {
         didSet {
+            cellViewModels.removeAll()
             for item in comics {
                 let viewModel = ComicCollectionViewCellViewModel(
                     title: item.title,
@@ -46,29 +51,54 @@ final class ComicListViewModel {
         }
     }
     private(set) var cellViewModels: [ComicCollectionViewCellViewModel] = []
-
-    // MARK: - Init
-    init(router: ComicListRouterProtocol) {
-        self.router = router
+    var showLoadMore: Bool {
+        offset + count < total
+    }
+    private var nextOffset: Int {
+        showLoadMore ? offset + limit : offset
     }
 }
 
 // MARK: - Internal methods
+extension SearchViewModel {
+    func updateSearchText(_ searchText: String) {
+        self.searchText = searchText
+    }
 
-extension ComicListViewModel {
+    func updateYear(_ year: Int?) {
+        self.year = year
+        cleanQueryParameters()
+        fetchComics()
+    }
+
     func fetchComics() {
-        let queryParameters = ComicQueryParameters(offset: offset, limit: limit)
-        comicProvider.fetchComics(queryParameters: queryParameters) { [weak self] result in
+//        guard !searchText.isEmpty else { return }
+        state = .fetching
+        let queryParameters = ComicQueryParameters(
+            offset: nextOffset,
+            limit: limit,
+            text: searchText.isEmpty ? nil : searchText,
+            year: year
+        )
+        provider.fetchComics(queryParameters: queryParameters) { [weak self] result in
             switch result {
             case let .success(success):
                 for item in success.data.results {
                     self?.comics.insert(item)
                 }
+                if success.data.results.isEmpty {
+                    DispatchQueue.main.async {
+                        self?.cleanQueryParameters()
+                        self?.state = .results
+                    }
+                    return
+                }
                 self?.count = success.data.count
                 self?.offset = success.data.offset
                 self?.total = success.data.total
                 DispatchQueue.main.async {
-                    self?.delegate?.loadedInitialComics()
+                    self?.state = .results
+                    self?.delegate?.loadedComics()
                 }
             case let .failure(failure):
                 print(failure.localizedDescription)
@@ -80,7 +110,7 @@ extension ComicListViewModel {
         guard !isLoadingMore else { return }
         isLoadingMore = true
         let queryParameters = ComicQueryParameters(offset: offset, limit: limit)
-        comicProvider.fetchComics(queryParameters: queryParameters) { [weak self] result in
+        provider.fetchComics(queryParameters: queryParameters) { [weak self] result in
             switch result {
             case let .success(success):
                 let originalCount = self?.comics.count ?? 0
@@ -102,13 +132,20 @@ extension ComicListViewModel {
         }
     }
 
-    func showComicDetail(at index: Int) {
-        let cellViewModel = cellViewModels[index]
-        guard let comic = comics.first(where: { $0.id == cellViewModel.id }) else { return }
-        router.showComicDetail(comic: comic)
+    func clearSearch() {
+        cleanQueryParameters()
+        state = .idle
     }
+}
 
-    func showSearch() {
-        router.showSearch()
+// MARK: - Private methods
+private extension SearchViewModel {
+    func cleanQueryParameters() {
+        offset = 0
+        count = 0
+        total = 0
+        comics.removeAll()
+        cellViewModels.removeAll()
+        delegate?.loadedComics()
     }
 }

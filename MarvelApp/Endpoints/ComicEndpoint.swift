@@ -15,9 +15,23 @@ private struct Constants {
     static let publicKey = "c4a764b0b192ca33d2de5536a2258caf"
 }
 
+struct ComicQueryParameters {
+    let offset: Int
+    let limit: Int
+    let text: String?
+    let year: Int?
+
+    init(offset: Int, limit: Int, text: String? = nil, year: Int? = nil) {
+        self.offset = offset
+        self.limit = limit
+        self.text = text
+        self.year = year
+    }
+}
+
 enum ComicEndpoint: EndPoint {
 
-    case comics(offset: Int, limit: Int)
+    case comics(queryParameters: ComicQueryParameters)
 
     var url: URL? {
         switch self {
@@ -51,9 +65,16 @@ enum ComicEndpoint: EndPoint {
         ]
 
         switch self {
-        case let .comics(offset, limit):
-            parameters["limit"] = "\(limit)"
-            parameters["offset"] = "\(offset)"
+        case let .comics(queryParameters):
+            parameters["limit"] = "\(queryParameters.limit)"
+            parameters["offset"] = "\(queryParameters.offset)"
+            if let text = queryParameters.text,
+               !text.isEmpty {
+                parameters["titleStartsWith"] = text
+            }
+            if let year = queryParameters.year {
+                parameters["startYear"] = "\(year)"
+            }
             return parameters
         }
     }

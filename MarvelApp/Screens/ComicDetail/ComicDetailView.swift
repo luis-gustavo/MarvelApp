@@ -17,10 +17,18 @@ final class ComicDetailView: UIView {
     // MARK: - UI Properties
     private lazy var imageView = UIImageView()
 
+    private lazy var issueLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .label
+        label.text = viewModel.issue
+        return label
+    }()
+
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .lightText
+        label.textColor = .secondaryLabel
         label.numberOfLines = 0
         label.text = viewModel.price
         return label
@@ -70,6 +78,7 @@ extension ComicDetailView: ViewCodable {
     func buildViewHierarchy() {
         addSubviews(
             imageView,
+            issueLabel,
             priceLabel,
             heartButton,
             cartButton,
@@ -82,8 +91,11 @@ extension ComicDetailView: ViewCodable {
             imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 32),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32),
             imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32),
-            imageView.bottomAnchor.constraint(equalTo: priceLabel.topAnchor, constant: -32),
 
+            issueLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            issueLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor),
+
+            priceLabel.topAnchor.constraint(equalTo: issueLabel.bottomAnchor, constant: 32),
             priceLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32),
             priceLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32),
             priceLabel.bottomAnchor.constraint(equalTo: cartButton.topAnchor, constant: -32),
@@ -106,6 +118,7 @@ extension ComicDetailView: ViewCodable {
     }
 
     func setupAdditionalConfiguration() {
+        backgroundColor = .systemBackground
         setComicImage()
     }
 }
