@@ -24,29 +24,22 @@ final class CartView: UIView {
     }()
 
     // MARK: - UI Properties
-    private let spinner: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .large)
-        view.hidesWhenStopped = true
-        view.startAnimating()
-        view.isHidden = true
-        view.alpha = 0
+    private lazy var resultsView: ResultsView = {
+        let view = ResultsView(viewModel: .init(noResultsType: .cart))
+        view.collectionViewDelegate.delegate = self
         return view
     }()
 
-    private lazy var collectionView: ComicCollectionView = {
-        let view = ComicCollectionView()
-        view.delegate = collectionViewDelegate
-        view.dataSource = collectionViewDelegate
-        view.isHidden = true
-        view.alpha = 0
-        return view
-    }()
-
-    private let noResultsView: NoResultsView = {
-        let view = NoResultsView(viewModel: .init(type: .cart))
-        view.isHidden = true
-        view.alpha = 0
-        return view
+    private lazy var buyButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .systemRed
+        button.setTitleColor(.label, for: .normal)
+        button.setTitle("Buy", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+        button.addAction(UIAction { [weak self]  _ in
+            self?.viewModel.proceedToCheckout()
+        }, for: .touchUpInside)
+        return button
     }()
 
     // MARK: - Inits
@@ -66,26 +59,22 @@ final class CartView: UIView {
 extension CartView: ViewCodable {
     func buildViewHierarchy() {
         addSubviews(
-            collectionView,
-            spinner,
-            noResultsView
+            resultsView,
+            buyButton
         )
     }
 
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            resultsView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            resultsView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            resultsView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            resultsView.bottomAnchor.constraint(equalTo: buyButton.topAnchor, constant: -32),
 
-            spinner.centerYAnchor.constraint(equalTo: centerYAnchor),
-            spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-            noResultsView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            noResultsView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            noResultsView.heightAnchor.constraint(equalToConstant: 200),
-            noResultsView.widthAnchor.constraint(equalTo: noResultsView.heightAnchor)
+            buyButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32),
+            buyButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -32),
+            buyButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32),
+            buyButton.heightAnchor.constraint(equalToConstant: 56)
         ])
     }
 
@@ -102,8 +91,8 @@ extension CartView: CartViewModelDelegate {
         let indexPathToAdd: [IndexPath] = Array(startingIndex..<(startingIndex + newCount)).compactMap {
             return IndexPath(row: $0, section: 0)
         }
-        collectionView.performBatchUpdates {
-            self.collectionView.insertItems(at: indexPathToAdd)
+        resultsView.collectionView.performBatchUpdates {
+            self.resultsView.collectionView.insertItems(at: indexPathToAdd)
         }
     }
 
@@ -128,14 +117,16 @@ extension CartView: CartViewModelDelegate {
             showNoResults = true
         }
 
-        collectionView.isHidden = !showCollectionView
-        spinner.isHidden = !showSpinner
-        noResultsView.isHidden = !showNoResults
+        resultsView.collectionView.isHidden = !showCollectionView
+        buyButton.isHidden = !showCollectionView
+        resultsView.spinner.isHidden = !showSpinner
+        resultsView.noResultsView.isHidden = !showNoResults
 
         UIView.animate(withDuration: 0.5) {
-            self.collectionView.alpha = showCollectionView ? 1 : 0
-            self.spinner.alpha = showSpinner ? 1 : 0
-            self.noResultsView.alpha = showNoResults ? 1 : 0
+            self.resultsView.collectionView.alpha = showCollectionView ? 1 : 0
+            self.buyButton.alpha = showCollectionView ? 1 : 0
+            self.resultsView.spinner.alpha = showSpinner ? 1 : 0
+            self.resultsView.noResultsView.alpha = showNoResults ? 1 : 0
         }
     }
 }

@@ -71,6 +71,9 @@ final class ComicDetailView: UIView {
         button.setTitleColor(.label, for: .normal)
         button.setTitle("Buy", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+        button.addAction(UIAction { [weak self]  _ in
+            self?.viewModel.proceedToCheckout()
+        }, for: .touchUpInside)
         return button
     }()
 

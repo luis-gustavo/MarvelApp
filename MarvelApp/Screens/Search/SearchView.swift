@@ -19,12 +19,9 @@ final class SearchView: UIView {
     }()
 
     // MARK: - UI Properties
-    private let spinner: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .large)
-        view.hidesWhenStopped = true
-        view.startAnimating()
-        view.isHidden = true
-        view.alpha = 0
+    private lazy var resultsView: ResultsView = {
+        let view = ResultsView(viewModel: .init(noResultsType: .cart))
+        view.collectionViewDelegate.delegate = self
         return view
     }()
 
@@ -36,23 +33,6 @@ final class SearchView: UIView {
         view.delegate = self
         view.showsCancelButton = true
         view.searchTextField.delegate = self
-        return view
-    }()
-
-    private let noResultsView: NoResultsView = {
-        let view = NoResultsView(viewModel: .init(type: .search))
-        view.isHidden = true
-        view.alpha = 0
-        return view
-    }()
-
-    private lazy var collectionView: ComicCollectionView = {
-        let view = ComicCollectionView()
-        view.isHidden = true
-        view.alpha = 0
-        view.delegate = collectionViewDelegate
-        view.dataSource = collectionViewDelegate
-        view.keyboardDismissMode = .onDrag
         return view
     }()
 
@@ -73,10 +53,8 @@ final class SearchView: UIView {
 extension SearchView: ViewCodable {
     func buildViewHierarchy() {
         addSubviews(
-            spinner,
-            searchBar,
-            noResultsView,
-            collectionView
+            resultsView,
+            searchBar
         )
     }
 
@@ -87,18 +65,10 @@ extension SearchView: ViewCodable {
             searchBar.trailingAnchor.constraint(equalTo: trailingAnchor),
             searchBar.heightAnchor.constraint(equalToConstant: 50),
 
-            spinner.centerYAnchor.constraint(equalTo: centerYAnchor),
-            spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-            noResultsView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            noResultsView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            noResultsView.heightAnchor.constraint(equalToConstant: 200),
-            noResultsView.widthAnchor.constraint(equalTo: noResultsView.heightAnchor),
-
-            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor)
+            resultsView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            resultsView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            resultsView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            resultsView.topAnchor.constraint(equalTo: searchBar.bottomAnchor)
         ])
     }
 
@@ -143,7 +113,7 @@ extension SearchView: UITextFieldDelegate {
 // MARK: - SearchViewModelDelegate
 extension SearchView: SearchViewModelDelegate {
     func loadedComics() {
-        collectionView.reloadData()
+        resultsView.collectionView.reloadData()
     }
 
     func loadedMoreComics(withOriginal originalCount: Int, andNewCount newCount: Int) {
@@ -152,8 +122,8 @@ extension SearchView: SearchViewModelDelegate {
         let indexPathToAdd: [IndexPath] = Array(startingIndex..<(startingIndex + newCount)).compactMap {
             return IndexPath(row: $0, section: 0)
         }
-        collectionView.performBatchUpdates {
-            self.collectionView.insertItems(at: indexPathToAdd)
+        resultsView.collectionView.performBatchUpdates {
+            self.resultsView.collectionView.insertItems(at: indexPathToAdd)
         }
     }
 
@@ -178,14 +148,14 @@ extension SearchView: SearchViewModelDelegate {
             showNoResults = viewModel.cellViewModels.isEmpty
         }
 
-        collectionView.isHidden = !showCollectionView
-        spinner.isHidden = !showSpinner
-        noResultsView.isHidden = !showNoResults
+        resultsView.collectionView.isHidden = !showCollectionView
+        resultsView.spinner.isHidden = !showSpinner
+        resultsView.noResultsView.isHidden = !showNoResults
 
         UIView.animate(withDuration: 0.5) {
-            self.collectionView.alpha = showCollectionView ? 1 : 0
-            self.spinner.alpha = showSpinner ? 1 : 0
-            self.noResultsView.alpha = showNoResults ? 1 : 0
+            self.resultsView.collectionView.alpha = showCollectionView ? 1 : 0
+            self.resultsView.spinner.alpha = showSpinner ? 1 : 0
+            self.resultsView.noResultsView.alpha = showNoResults ? 1 : 0
         }
     }
 }

@@ -22,11 +22,13 @@ final class ComicDetailViewModel {
     var isOnCart: Bool {
         cart().contains(comic.id)
     }
+    private let router: ComicDetailRouterProtocol
     private let comic: Comic
     private let storage: Storage = Services.make(for: Storage.self)
 
     // MARK: - Inits
-    init(comic: Comic) {
+    init(router: ComicDetailRouterProtocol, comic: Comic) {
+        self.router = router
         self.comic = comic
     }
 }
@@ -39,6 +41,10 @@ extension ComicDetailViewModel {
 
     func changeCartStatus(selected: Bool) -> Bool {
         changeStatus(selected: selected, table: .cart)
+    }
+
+    func proceedToCheckout() {
+        router.showCheckout(sender: router, comics: [comic])
     }
 }
 

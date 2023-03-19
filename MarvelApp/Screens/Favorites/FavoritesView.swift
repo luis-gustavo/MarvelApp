@@ -17,35 +17,10 @@ final class FavoritesView: UIView {
     weak var delegate: FavoritesViewDelegate?
     private let viewModel: FavoritesViewModel
 
-    private lazy var collectionViewDelegate: ComicCollectionViewDataSource = {
-        let comicCollectionViewDataSource = ComicCollectionViewDataSource()
-        comicCollectionViewDataSource.delegate = self
-        return comicCollectionViewDataSource
-    }()
-
     // MARK: - UI Properties
-    private let spinner: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .large)
-        view.hidesWhenStopped = true
-        view.startAnimating()
-        view.isHidden = true
-        view.alpha = 0
-        return view
-    }()
-
-    private lazy var collectionView: ComicCollectionView = {
-        let view = ComicCollectionView()
-        view.delegate = collectionViewDelegate
-        view.dataSource = collectionViewDelegate
-        view.isHidden = true
-        view.alpha = 0
-        return view
-    }()
-
-    private let noResultsView: NoResultsView = {
-        let view = NoResultsView(viewModel: .init(type: .favorites))
-        view.isHidden = true
-        view.alpha = 0
+    private lazy var resultsView: ResultsView = {
+        let view = ResultsView(viewModel: .init(noResultsType: .favorites))
+        view.collectionViewDelegate.delegate = self
         return view
     }()
 
@@ -66,26 +41,16 @@ final class FavoritesView: UIView {
 extension FavoritesView: ViewCodable {
     func buildViewHierarchy() {
         addSubviews(
-            collectionView,
-            spinner,
-            noResultsView
+            resultsView
         )
     }
 
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-            spinner.centerYAnchor.constraint(equalTo: centerYAnchor),
-            spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-            noResultsView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            noResultsView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            noResultsView.heightAnchor.constraint(equalToConstant: 200),
-            noResultsView.widthAnchor.constraint(equalTo: noResultsView.heightAnchor)
+            resultsView.topAnchor.constraint(equalTo: topAnchor),
+            resultsView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            resultsView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            resultsView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
 
@@ -102,8 +67,8 @@ extension FavoritesView: FavoritesViewModelDelegate {
         let indexPathToAdd: [IndexPath] = Array(startingIndex..<(startingIndex + newCount)).compactMap {
             return IndexPath(row: $0, section: 0)
         }
-        collectionView.performBatchUpdates {
-            self.collectionView.insertItems(at: indexPathToAdd)
+        resultsView.collectionView.performBatchUpdates {
+            self.resultsView.collectionView.insertItems(at: indexPathToAdd)
         }
     }
 
@@ -128,14 +93,14 @@ extension FavoritesView: FavoritesViewModelDelegate {
             showNoResults = true
         }
 
-        collectionView.isHidden = !showCollectionView
-        spinner.isHidden = !showSpinner
-        noResultsView.isHidden = !showNoResults
+        resultsView.collectionView.isHidden = !showCollectionView
+        resultsView.spinner.isHidden = !showSpinner
+        resultsView.noResultsView.isHidden = !showNoResults
 
         UIView.animate(withDuration: 0.5) {
-            self.collectionView.alpha = showCollectionView ? 1 : 0
-            self.spinner.alpha = showSpinner ? 1 : 0
-            self.noResultsView.alpha = showNoResults ? 1 : 0
+            self.resultsView.collectionView.alpha = showCollectionView ? 1 : 0
+            self.resultsView.spinner.alpha = showSpinner ? 1 : 0
+            self.resultsView.noResultsView.alpha = showNoResults ? 1 : 0
         }
     }
 }
