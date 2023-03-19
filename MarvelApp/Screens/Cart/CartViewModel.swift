@@ -11,13 +11,13 @@ import Storage
 
 protocol CartViewModelDelegate: AnyObject {
     func loadedComics(originalCount: Int, newCount: Int)
-    func changedState(_ state: CartViewModel.CartState)
+    func changedState(_ state: CartViewModel.State)
 }
 
 final class CartViewModel {
 
-    // MARK: - CartState
-    enum CartState {
+    // MARK: - State
+    enum State {
         case fetching, results, noItems
     }
 
@@ -32,7 +32,7 @@ final class CartViewModel {
     }
     weak var delegate: CartViewModelDelegate?
     private let router: CartRouterProtocol
-    private var state: CartState = .fetching {
+    private var state: State = .fetching {
         didSet {
             DispatchQueue.main.async {
                 self.delegate?.changedState(self.state)
@@ -54,14 +54,14 @@ final class CartViewModel {
 extension CartViewModel {
     func fetchComicsFromCart() {
         let ids = cartComicsIds()
+        guard !ids.isEmpty else {
+            state = .noItems
+            return
+        }
         guard cachedIds != ids else { return }
         cachedIds = ids
         comics.removeAll()
-        if ids.isEmpty {
-            state = .noItems
-        } else {
-            state = .fetching
-        }
+        state = .fetching
         for id in ids {
             comicProvider.fetchComic(by: id) { [weak self] result in
                 self?.state = .results
