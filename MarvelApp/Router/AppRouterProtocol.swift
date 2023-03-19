@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol AppRouterProtocol: ComicListRouterProtocol, CartRouterProtocol {
+protocol AppRouterProtocol: ComicListRouterProtocol, CartRouterProtocol, FavoritesRouterProtocol {
     var rootViewController: UINavigationController { get set }
     func showTabBar()
 }
@@ -15,11 +15,6 @@ protocol AppRouterProtocol: ComicListRouterProtocol, CartRouterProtocol {
 // MARK: - ComicListRouterProtocol
 extension AppRouterProtocol {
     func showComicDetail(_ sender: ComicListRouterProtocol, comic: Comic) {
-//        let viewModel = ComicDetailViewModel(comic: comic)
-//        let viewController = ComicDetailViewController(viewModel: viewModel)
-//        viewController.navigationItem.largeTitleDisplayMode = .never
-//        viewController.hidesBottomBarWhenPushed = true
-//        comicListNavigationViewController?.pushViewController(viewController, animated: true)
         showComicDetail(from: comicListNavigationViewController, comic: comic)
     }
 
@@ -35,12 +30,14 @@ extension AppRouterProtocol {
 // MARK: - ComicListRouterProtocol
 extension AppRouterProtocol {
     func showComicDetail(_ sender: CartRouterProtocol, comic: Comic) {
-//        let viewModel = ComicDetailViewModel(comic: comic)
-//        let viewController = ComicDetailViewController(viewModel: viewModel)
-//        viewController.navigationItem.largeTitleDisplayMode = .never
-//        viewController.hidesBottomBarWhenPushed = true
-//        comicListNavigationViewController?.pushViewController(viewController, animated: true)
         showComicDetail(from: cartNavigationViewController, comic: comic)
+    }
+}
+
+// MARK: - FavoritesRouterProtocol
+extension AppRouterProtocol {
+    func showComicDetail(_ sender: FavoritesRouterProtocol, comic: Comic) {
+        showComicDetail(from: favoritesNavigationViewController, comic: comic)
     }
 }
 
