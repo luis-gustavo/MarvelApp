@@ -38,7 +38,7 @@ final class SearchViewController: UIViewController {
     // MARK: - loadView
     override func loadView() {
         view = searchView
-        title = "Search"
+        title = Localizable.search.localized
     }
 }
 
@@ -47,7 +47,7 @@ private extension SearchViewController {
     func createOptionsMenu() -> UIMenu {
         var options = (1939...2023).map { "\($0)" }
         options = options.reversed()
-        options.insert("Remove Filter", at: 0)
+        options.insert(Localizable.removeFilter.localized, at: 0)
         let elements = options.map({ option in
             return UIAction(title: option) { [weak self] _ in
                 self?.viewModel.updateYear(Int(option))

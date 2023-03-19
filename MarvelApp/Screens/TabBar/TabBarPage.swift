@@ -13,11 +13,11 @@ enum TabBarPage: CaseIterable {
     var title: String {
         switch self {
         case .comics:
-            return "Comics"
+            return Localizable.comics.localized
         case .cart:
-            return "Cart"
+            return Localizable.cart.localized
         case .favorite:
-            return "Favorites"
+            return Localizable.favorites.localized
         }
     }
 

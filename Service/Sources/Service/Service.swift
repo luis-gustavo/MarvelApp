@@ -12,10 +12,18 @@ public class Services {
     public func make<S, R>(for service: S.Type) -> R {
         let id = ObjectIdentifier(service)
         guard let maker = registers[id] else {
-            fatalError("Service '\(service)' wasn't previously registered")
+            fatalError(
+                Localizable.serviceWasntPreviouslyRegistered(
+                    .init(describing: service)
+                ).localized
+            )
         }
         guard let casted = maker() as? R else {
-            fatalError("Service '\(service)' can't be downcasted to '\(R.self)'.")
+            fatalError(
+                Localizable.serviceCantBeDowncasted(
+                    String(describing: service),
+                    .init(describing: R.self)
+                ).localized)
         }
         return casted
     }

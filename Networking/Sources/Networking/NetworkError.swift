@@ -17,12 +17,18 @@ public enum NetworkError: Error, LocalizedError, CustomStringConvertible, Hashab
 
     public var description: String {
         switch self {
-        case .dataMustExist: return "dataMustExist"
-        case .notHTTPURLResponse: return "notHTTPUrlResponse"
-        case .queryParameters: return "unableToCreateQueryParameters"
-        case .unableToCreateURL: return "unableToCreateUrl"
-        case .unknownStatusCode: return "unknownStatusCode"
-        case let .unmapped(error): return error.localizedDescription
+        case .dataMustExist:
+            return Localizable.dataMustExist.localized
+        case .notHTTPURLResponse:
+            return Localizable.notHttpUrlResponse.localized
+        case .queryParameters:
+            return Localizable.unableToCreateQueryParameters.localized
+        case .unableToCreateURL:
+            return Localizable.unableToCreateUrl.localized
+        case .unknownStatusCode:
+            return Localizable.unknownStatusCode.localized
+        case let .unmapped(error):
+            return error.localizedDescription
         }
     }
 

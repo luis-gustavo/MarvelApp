@@ -39,7 +39,7 @@ final class LoginView: UIView {
 
     private lazy var emailTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Email"
+        textField.placeholder = Localizable.email.localized
         textField.delegate = self
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .continue
@@ -53,7 +53,7 @@ final class LoginView: UIView {
 
     private lazy var passwordTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Password"
+        textField.placeholder = Localizable.password.localized
         textField.delegate = self
         textField.returnKeyType = .done
         textField.isSecureTextEntry = true
@@ -66,7 +66,7 @@ final class LoginView: UIView {
 
     private lazy var loginButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Login", for: .normal)
+        button.setTitle(Localizable.login.localized, for: .normal)
         button.setTitleColor(.label, for: .normal)
         button.setTitleColor(.label.withAlphaComponent(0.5), for: .disabled)
         button.addAction(UIAction { [weak self] _ in

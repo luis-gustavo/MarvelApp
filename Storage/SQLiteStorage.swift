@@ -143,3 +143,7 @@ private func createConnection(_ location: Connection.Location) -> Swift.Result<C
         return .failure(StorageError.connectionCreation(error))
     }
 }
+
+enum MyError: Error {
+    case meuErro
+}
