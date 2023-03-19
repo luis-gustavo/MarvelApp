@@ -10,7 +10,15 @@ import UIKit
 protocol AppRouterProtocol: ComicListRouterProtocol,
                             CartRouterProtocol,
                             FavoritesRouterProtocol,
-                            ComicDetailRouterProtocol {
+                            ComicDetailRouterProtocol,
+                            LoginRouterProtocol {
     var rootViewController: UINavigationController { get set }
-    func showTabBar()
+    func showLogin()
+}
+
+extension AppRouterProtocol {
+    func showLogin() {
+        let viewController = LoginViewController(viewModel: .init(router: self))
+        rootViewController.setViewControllers([viewController], animated: true)
+    }
 }
