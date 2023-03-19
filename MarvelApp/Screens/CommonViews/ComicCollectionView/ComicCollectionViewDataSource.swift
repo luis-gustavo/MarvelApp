@@ -1,5 +1,5 @@
 //
-//  ComicCollectionViewDelegate.swift
+//  ComicCollectionViewDataSource.swift
 //  MarvelApp
 //
 //  Created by Luis Gustavo on 18/03/23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ComicCollectionViewDelegateProtocol: AnyObject {
+protocol ComicCollectionViewDataSourceProtocol: AnyObject {
     func didSelectComic(at index: Int)
     func shouldFetchMoreData()
     func showLoadMore() -> Bool
@@ -18,7 +18,7 @@ protocol ComicCollectionViewDelegateProtocol: AnyObject {
 final class ComicCollectionViewDataSource: NSObject {
 
     // MARK: - Properties
-    weak var delegate: ComicCollectionViewDelegateProtocol?
+    weak var delegate: ComicCollectionViewDataSourceProtocol?
 }
 
 // MARK: - UICollectionViewDataSource
@@ -38,7 +38,7 @@ extension ComicCollectionViewDataSource: UICollectionViewDataSource {
             return .init()
         }
 
-        let cellViewModel = (delegate?.cellViewModels() ?? [])[indexPath.item] //viewModel.cellViewModels[indexPath.item]
+        let cellViewModel = (delegate?.cellViewModels() ?? [])[indexPath.item]
         cell.configure(with: cellViewModel)
         return cell
     }
@@ -64,7 +64,6 @@ extension ComicCollectionViewDataSource: UICollectionViewDataSource {
 // MARK: - UICollectionViewDataSource
 extension ComicCollectionViewDataSource: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        delegate?.didSelectComic(at: indexPath.item)
         delegate?.didSelectComic(at: indexPath.item)
     }
 }
@@ -89,7 +88,7 @@ extension ComicCollectionViewDataSource: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-        guard delegate?.showLoadMore() ?? false /*viewModel.showLoadMore*/ else { return .zero }
+        guard delegate?.showLoadMore() ?? false else { return .zero }
         return .init(width: collectionView.frame.width, height: 100)
     }
 }
@@ -97,14 +96,13 @@ extension ComicCollectionViewDataSource: UICollectionViewDelegateFlowLayout {
 // MARK: - UIScrollViewDelegate
 extension ComicCollectionViewDataSource {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard delegate?.showLoadMore() ?? false, //*viewModel.showLoadMore*/,
-              !(delegate?.isLoadingMore() ?? false)/*!viewModel.isLoadingMore*/ else { return }
+        guard delegate?.showLoadMore() ?? false,
+              !(delegate?.isLoadingMore() ?? false) else { return }
         let yOffset = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let scrollViewFixedHeight = scrollView.frame.size.height
 
         if yOffset >= (contentHeight - scrollViewFixedHeight - 120) {
-//            viewModel.fetchAdditionalComics()
             delegate?.shouldFetchMoreData()
         }
     }
