@@ -34,24 +34,38 @@ final class ComicDetailView: UIView {
         return label
     }()
 
-    private let heartButton: UIButton = {
+    private lazy var heartButton: UIButton = {
         let button = UIButton()
         button.setImage(.init(systemName: "heart"), for: .normal)
         button.setImage(.init(systemName: "heart.fill"), for: .selected)
         button.tintColor = .systemRed
         button.backgroundColor = .secondarySystemBackground
+        button.isSelected = viewModel.isFavorited
+        button.addAction(UIAction { [weak self]  _ in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                button.isSelected = self.viewModel.changeFavoriteStatus(selected: !button.isSelected)
+            }
+        }, for: .touchUpInside)
         return button
     }()
 
-    private let cartButton: UIButton = {
+    private lazy var cartButton: UIButton = {
         let button = UIButton()
         button.setImage(.init(systemName: "cart"), for: .normal)
         button.setImage(.init(systemName: "cart.fill"), for: .selected)
         button.backgroundColor = .secondarySystemBackground
+        button.isSelected = viewModel.isOnCart
+        button.addAction(UIAction { [weak self]  _ in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                button.isSelected = self.viewModel.changeCartStatus(selected: !button.isSelected)
+            }
+        }, for: .touchUpInside)
         return button
     }()
 
-    private let buyButton: UIButton = {
+    private lazy var buyButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemRed
         button.setTitleColor(.label, for: .normal)
