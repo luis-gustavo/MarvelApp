@@ -7,6 +7,7 @@
 
 import Networking
 import Service
+import Storage
 import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -28,6 +29,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     private func registerServices() {
+        Services.register(Storage.self) { () -> SQLiteStorage in
+            let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+            return SQLiteStorage(.uri("\(path)/db.sqlite3"))
+        }
         Services.register(URLSessionNetworkingProtocol.self) { URLSessionNetworking.shared }
         Services.register(ImageLoaderProtocol.self) { ImageLoader.shared }
     }
