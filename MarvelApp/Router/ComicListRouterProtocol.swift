@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ComicListRouterProtocol {
-    var navigationViewController: UINavigationController? { get set }
-    func showComicDetail(comic: Comic)
+    var comicListNavigationViewController: UINavigationController? { get set }
+    func showComicDetail(_ sender: ComicListRouterProtocol, comic: Comic)
     func showSearch()
 }

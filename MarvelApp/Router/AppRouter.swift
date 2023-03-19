@@ -10,8 +10,9 @@ import UIKit
 final class AppRouter: AppRouterProtocol {
 
     // MARK: - Properties
-    var navigationViewController: UINavigationController?
     var rootViewController: UINavigationController
+    var comicListNavigationViewController: UINavigationController?
+    var cartNavigationViewController: UINavigationController?
 
     // MARK: - Init
     init(rootViewController: UINavigationController) {
@@ -20,8 +21,9 @@ final class AppRouter: AppRouterProtocol {
 
     // MARK: - ViewFactory
     func showTabBar() {
-        let tabBarController = TabBarController(viewFactory: self)
-        navigationViewController = tabBarController.comicListNavigationController
+        let tabBarController = TabBarController(appRouter: self)
+        comicListNavigationViewController = tabBarController.comicListNavigationController
+        cartNavigationViewController = tabBarController.cartNavigationController
         rootViewController.setViewControllers([tabBarController], animated: true)
     }
 }

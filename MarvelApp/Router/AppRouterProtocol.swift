@@ -7,18 +7,20 @@
 
 import UIKit
 
-protocol AppRouterProtocol: ComicListRouterProtocol {
+protocol AppRouterProtocol: ComicListRouterProtocol, CartRouterProtocol {
     var rootViewController: UINavigationController { get set }
     func showTabBar()
 }
 
+// MARK: - ComicListRouterProtocol
 extension AppRouterProtocol {
-    func showComicDetail(comic: Comic) {
-        let viewModel = ComicDetailViewModel(comic: comic)
-        let viewController = ComicDetailViewController(viewModel: viewModel)
-        viewController.navigationItem.largeTitleDisplayMode = .never
-        viewController.hidesBottomBarWhenPushed = true
-        navigationViewController?.pushViewController(viewController, animated: true)
+    func showComicDetail(_ sender: ComicListRouterProtocol, comic: Comic) {
+//        let viewModel = ComicDetailViewModel(comic: comic)
+//        let viewController = ComicDetailViewController(viewModel: viewModel)
+//        viewController.navigationItem.largeTitleDisplayMode = .never
+//        viewController.hidesBottomBarWhenPushed = true
+//        comicListNavigationViewController?.pushViewController(viewController, animated: true)
+        showComicDetail(from: comicListNavigationViewController, comic: comic)
     }
 
     func showSearch() {
@@ -26,6 +28,29 @@ extension AppRouterProtocol {
         let viewController = SearchViewController(viewModel: viewModel)
         viewController.navigationItem.largeTitleDisplayMode = .never
         viewController.hidesBottomBarWhenPushed = true
-        navigationViewController?.pushViewController(viewController, animated: true)
+        comicListNavigationViewController?.pushViewController(viewController, animated: true)
+    }
+}
+
+// MARK: - ComicListRouterProtocol
+extension AppRouterProtocol {
+    func showComicDetail(_ sender: CartRouterProtocol, comic: Comic) {
+//        let viewModel = ComicDetailViewModel(comic: comic)
+//        let viewController = ComicDetailViewController(viewModel: viewModel)
+//        viewController.navigationItem.largeTitleDisplayMode = .never
+//        viewController.hidesBottomBarWhenPushed = true
+//        comicListNavigationViewController?.pushViewController(viewController, animated: true)
+        showComicDetail(from: cartNavigationViewController, comic: comic)
+    }
+}
+
+// MARK: - Private methods
+private extension AppRouterProtocol {
+    func showComicDetail(from navigationController: UINavigationController?, comic: Comic) {
+        let viewModel = ComicDetailViewModel(comic: comic)
+        let viewController = ComicDetailViewController(viewModel: viewModel)
+        viewController.navigationItem.largeTitleDisplayMode = .never
+        viewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
