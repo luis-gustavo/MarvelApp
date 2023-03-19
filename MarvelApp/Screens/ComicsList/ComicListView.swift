@@ -74,7 +74,9 @@ extension ComicListView: ViewCodable {
         ])
     }
 
-    func setupAdditionalConfiguration() { }
+    func setupAdditionalConfiguration() {
+        backgroundColor = .systemBackground
+    }
 }
 
 // MARK: - ComicListViewModelDelegate

@@ -2,7 +2,7 @@ public class Services {
 
     // MARK: - Properties
     public static let `default` = Services()
-    private var registers = [ObjectIdentifier : () -> Any]()
+    private var registers = [ObjectIdentifier: () -> Any]()
 
     // MARK: - Methods
     public func register<S, R>(_ service: S.Type, maker: @escaping () -> R) {

@@ -65,8 +65,10 @@ final class LoginView: UIView {
     }()
 
     private lazy var loginButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton()
         button.setTitle("Login", for: .normal)
+        button.setTitleColor(.label, for: .normal)
+        button.setTitleColor(.label.withAlphaComponent(0.5), for: .disabled)
         button.addAction(UIAction { [weak self] _ in
             self?.endEditing(true)
             self?.viewModel.login()
@@ -133,7 +135,9 @@ extension LoginView: ViewCodable {
         ])
     }
 
-    func setupAdditionalConfiguration() { }
+    func setupAdditionalConfiguration() {
+        backgroundColor = .systemRed
+    }
 }
 
 // MARK: - UITextFieldDelegate

@@ -8,12 +8,14 @@
 import Foundation
 
 public struct NetworkResponse: Hashable {
-    
+
+    // MARK: - Properties
     public let data: Data
     public let status: HTTPStatusCode
     public let response: HTTPURLResponse
     public let request: URLRequest
-    
+
+    // MARK: - Inits
     init(data: Data, status: HTTPStatusCode, response: HTTPURLResponse, request: URLRequest) {
         self.data = data
         self.status = status

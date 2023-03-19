@@ -93,11 +93,18 @@ public struct URLSessionNetworking: URLSessionNetworkingProtocol {
                 return
             }
 
-            guard let statusCode = HTTPStatusCode(rawValue: httpResponse.statusCode) else { completion(.failure(.unknownStatusCode(httpResponse.statusCode)))
+            guard let statusCode = HTTPStatusCode(
+                rawValue: httpResponse.statusCode
+            ) else { completion(.failure(.unknownStatusCode(httpResponse.statusCode)))
                 return
             }
 
-            completion(.success(.init(data: data ?? Data(), status: statusCode, response: httpResponse, request: request)))
+            completion(.success(.init(
+                data: data ?? Data(),
+                status: statusCode,
+                response: httpResponse,
+                request: request
+            )))
         }
         dataTask.resume()
     }
