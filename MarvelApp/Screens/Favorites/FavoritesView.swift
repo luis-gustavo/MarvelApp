@@ -1,21 +1,21 @@
 //
-//  CartView.swift
+//  FavoritesView.swift
 //  MarvelApp
 //
-//  Created by Luis Gustavo on 18/03/23.
+//  Created by Luis Gustavo on 19/03/23.
 //
 
 import UIKit
 
-protocol CartViewDelegate: AnyObject {
+protocol FavoritesViewDelegate: AnyObject {
     func didSelectComic(at position: Int)
 }
 
-final class CartView: UIView {
+final class FavoritesView: UIView {
 
     // MARK: - Properties
-    weak var delegate: CartViewDelegate?
-    private let viewModel: CartViewModel
+    weak var delegate: FavoritesViewDelegate?
+    private let viewModel: FavoritesViewModel
 
     private lazy var collectionViewDelegate: ComicCollectionViewDataSource = {
         let comicCollectionViewDataSource = ComicCollectionViewDataSource()
@@ -43,14 +43,14 @@ final class CartView: UIView {
     }()
 
     private let noResultsView: NoResultsView = {
-        let view = NoResultsView(viewModel: .init(type: .cart))
+        let view = NoResultsView(viewModel: .init(type: .favorites))
         view.isHidden = true
         view.alpha = 0
         return view
     }()
 
     // MARK: - Inits
-    init(viewModel: CartViewModel) {
+    init(viewModel: FavoritesViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupViewConfiguration()
@@ -63,7 +63,7 @@ final class CartView: UIView {
 }
 
 // MARK: - ViewCodable
-extension CartView: ViewCodable {
+extension FavoritesView: ViewCodable {
     func buildViewHierarchy() {
         addSubviews(
             collectionView,
@@ -95,7 +95,7 @@ extension CartView: ViewCodable {
 }
 
 // MARK: - ComicCollectionViewDataSourceProtocol
-extension CartView: CartViewModelDelegate {
+extension FavoritesView: FavoritesViewModelDelegate {
     func loadedComics(originalCount: Int, newCount: Int) {
         let total = originalCount + newCount
         let startingIndex = total - newCount
@@ -107,7 +107,7 @@ extension CartView: CartViewModelDelegate {
         }
     }
 
-    func changedState(_ state: CartViewModel.State) {
+    func changedState(_ state: FavoritesViewModel.State) {
 
         let showCollectionView: Bool
         let showSpinner: Bool
@@ -141,7 +141,7 @@ extension CartView: CartViewModelDelegate {
 }
 
 // MARK: - ComicCollectionViewDataSourceProtocol
-extension CartView: ComicCollectionViewDataSourceProtocol {
+extension FavoritesView: ComicCollectionViewDataSourceProtocol {
     func didSelectComic(at index: Int) {
         delegate?.didSelectComic(at: index)
     }

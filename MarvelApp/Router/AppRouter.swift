@@ -13,6 +13,7 @@ final class AppRouter: AppRouterProtocol {
     var rootViewController: UINavigationController
     var comicListNavigationViewController: UINavigationController?
     var cartNavigationViewController: UINavigationController?
+    var favoritesNavigationViewController: UINavigationController?
 
     // MARK: - Init
     init(rootViewController: UINavigationController) {
@@ -24,6 +25,7 @@ final class AppRouter: AppRouterProtocol {
         let tabBarController = TabBarController(appRouter: self)
         comicListNavigationViewController = tabBarController.comicListNavigationController
         cartNavigationViewController = tabBarController.cartNavigationController
+        favoritesNavigationViewController = tabBarController.favoritesNavigationController
         rootViewController.setViewControllers([tabBarController], animated: true)
     }
 }

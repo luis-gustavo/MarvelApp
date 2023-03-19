@@ -1,20 +1,20 @@
 //
-//  CartViewModel.swift
+//  FavoritesViewModel.swift
 //  MarvelApp
 //
-//  Created by Luis Gustavo on 18/03/23.
+//  Created by Luis Gustavo on 19/03/23.
 //
 
 import Foundation
 import Service
 import Storage
 
-protocol CartViewModelDelegate: AnyObject {
+protocol FavoritesViewModelDelegate: AnyObject {
     func loadedComics(originalCount: Int, newCount: Int)
-    func changedState(_ state: CartViewModel.State)
+    func changedState(_ state: FavoritesViewModel.State)
 }
 
-final class CartViewModel {
+final class FavoritesViewModel {
 
     // MARK: - State
     enum State {
@@ -30,8 +30,8 @@ final class CartViewModel {
                 imageUrl: comic.thumbnail.url
         )}
     }
-    weak var delegate: CartViewModelDelegate?
-    private let router: CartRouterProtocol
+    weak var delegate: FavoritesViewModelDelegate?
+    private let router: FavoritesRouterProtocol
     private var state: State = .fetching {
         didSet {
             DispatchQueue.main.async {
@@ -45,15 +45,15 @@ final class CartViewModel {
     private var cachedIds = [Int]()
 
     // MARK: - Init
-    init(router: CartRouterProtocol) {
+    init(router: FavoritesRouterProtocol) {
         self.router = router
     }
 }
 
 // MARK: - Internal methods
-extension CartViewModel {
-    func fetchComicsFromCart() {
-        let ids = cartComicsIds()
+extension FavoritesViewModel {
+    func fetchComicsFromFavorites() {
+        let ids = favoritesComicsIds()
         guard !ids.isEmpty else {
             state = .noItems
             return
@@ -87,9 +87,9 @@ extension CartViewModel {
 }
 
 // MARK: - Private methods
-private extension CartViewModel {
-    func cartComicsIds() -> [Int] {
-        switch storage.read(from: .cart) {
+private extension FavoritesViewModel {
+    func favoritesComicsIds() -> [Int] {
+        switch storage.read(from: .favorite) {
         case let .success(rows):
             return rows.map { $0.model }
         case .failure:
