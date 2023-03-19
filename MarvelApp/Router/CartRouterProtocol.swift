@@ -10,4 +10,5 @@ import UIKit
 protocol CartRouterProtocol {
     var cartNavigationViewController: UINavigationController? { get set }
     func showComicDetail(_ sender: CartRouterProtocol, comic: Comic)
+    func showCheckout(_ sender: CartRouterProtocol, comics: [Comic])
 }

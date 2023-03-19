@@ -84,6 +84,10 @@ extension CartViewModel {
         let comic = comics[index]
         router.showComicDetail(router, comic: comic)
     }
+
+    func proceedToCheckout() {
+        router.showCheckout(router, comics: comics)
+    }
 }
 
 // MARK: - Private methods
