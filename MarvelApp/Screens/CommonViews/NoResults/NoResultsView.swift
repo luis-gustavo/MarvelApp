@@ -1,16 +1,16 @@
 //
-//  NoSearchResultsView.swift
+//  NoResultsView.swift
 //  MarvelApp
 //
-//  Created by Luis Gustavo on 17/03/23.
+//  Created by Luis Gustavo on 18/03/23.
 //
 
 import UIKit
 
-final class NoSearchResultsView: UIView {
+final class NoResultsView: UIView {
 
     // MARK: - Properties
-    private let viewModel = NoSearchResultsViewModel()
+    private let viewModel: NoResultsViewModel
 
     // MARK: - UI Properties
     private lazy var titleLabel: UILabel = {
@@ -31,7 +31,8 @@ final class NoSearchResultsView: UIView {
     }()
 
     // MARK: - Inits
-    init() {
+    init(viewModel: NoResultsViewModel) {
+        self.viewModel = viewModel
         super.init(frame: .zero)
         setupViewConfiguration()
     }
@@ -39,11 +40,10 @@ final class NoSearchResultsView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }
 
 // MARK: - ViewCodable
-extension NoSearchResultsView: ViewCodable {
+extension NoResultsView: ViewCodable {
     func buildViewHierarchy() {
         addSubviews(
             titleLabel,

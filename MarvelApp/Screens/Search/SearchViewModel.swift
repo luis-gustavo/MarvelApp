@@ -22,6 +22,15 @@ final class SearchViewModel {
 
     // MARK: - Properties
     weak var delegate: SearchViewModelDelegate?
+    var cellViewModels: [ComicCollectionViewCellViewModel] {
+        comics.map { comic in
+            return .init(
+                title: comic.title,
+                id: comic.id,
+                imageUrl: comic.thumbnail.url
+            )
+        }
+    }
     private var state: SearchState = .idle {
         didSet {
             delegate?.changedState(state)
@@ -35,22 +44,7 @@ final class SearchViewModel {
     private var count = 0
     private var total = 0
     private let limit = 20
-    private var comics = Set<Comic>() {
-        didSet {
-            cellViewModels.removeAll()
-            for item in comics {
-                let viewModel = ComicCollectionViewCellViewModel(
-                    title: item.title,
-                    id: item.id,
-                    imageUrl: item.thumbnail.url
-                )
-                if !cellViewModels.contains(viewModel) {
-                    cellViewModels.append(viewModel)
-                }
-            }
-        }
-    }
-    private(set) var cellViewModels: [ComicCollectionViewCellViewModel] = []
+    private var comics = [Comic]()
     var showLoadMore: Bool {
         offset + count < total
     }
@@ -81,24 +75,25 @@ extension SearchViewModel {
             year: year
         )
         provider.fetchComics(queryParameters: queryParameters) { [weak self] result in
+            guard let self else { return }
             switch result {
             case let .success(success):
-                for item in success.data.results {
-                    self?.comics.insert(item)
+                for item in success.data.results where !self.comics.contains(item) {
+                    self.comics.append(item)
                 }
                 if success.data.results.isEmpty {
                     DispatchQueue.main.async {
-                        self?.cleanQueryParameters()
-                        self?.state = .results
+                        self.cleanQueryParameters()
+                        self.state = .results
                     }
                     return
                 }
-                self?.count = success.data.count
-                self?.offset = success.data.offset
-                self?.total = success.data.total
+                self.count = success.data.count
+                self.offset = success.data.offset
+                self.total = success.data.total
                 DispatchQueue.main.async {
-                    self?.state = .results
-                    self?.delegate?.loadedComics()
+                    self.state = .results
+                    self.delegate?.loadedComics()
                 }
             case let .failure(failure):
                 print(failure.localizedDescription)
@@ -109,25 +104,26 @@ extension SearchViewModel {
     func fetchAdditionalComics() {
         guard !isLoadingMore else { return }
         isLoadingMore = true
-        let queryParameters = ComicQueryParameters(offset: offset, limit: limit)
+        let queryParameters = ComicQueryParameters(offset: nextOffset, limit: limit)
         provider.fetchComics(queryParameters: queryParameters) { [weak self] result in
+            guard let self else { return }
             switch result {
             case let .success(success):
-                let originalCount = self?.comics.count ?? 0
-                for item in success.data.results {
-                    self?.comics.insert(item)
+                let originalCount = self.comics.count
+                for item in success.data.results where !self.comics.contains(item) {
+                    self.comics.append(item)
                 }
-                let newCount = (self?.comics.count ?? 0) - originalCount
-                self?.count = success.data.count
-                self?.offset = success.data.offset
-                self?.total = success.data.total
+                let newCount = self.comics.count - originalCount
+                self.count = success.data.count
+                self.offset = success.data.offset
+                self.total = success.data.total
                 DispatchQueue.main.async {
-                    self?.delegate?.loadedMoreComics(withOriginal: originalCount, andNewCount: newCount)
-                    self?.isLoadingMore = false
+                    self.delegate?.loadedMoreComics(withOriginal: originalCount, andNewCount: newCount)
+                    self.isLoadingMore = false
                 }
             case let .failure(failure):
                 print(failure.localizedDescription)
-                self?.isLoadingMore = false
+                self.isLoadingMore = false
             }
         }
     }
@@ -145,7 +141,6 @@ private extension SearchViewModel {
         count = 0
         total = 0
         comics.removeAll()
-        cellViewModels.removeAll()
         delegate?.loadedComics()
     }
 }

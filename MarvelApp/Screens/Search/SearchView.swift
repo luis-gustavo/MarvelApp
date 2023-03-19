@@ -12,6 +12,12 @@ final class SearchView: UIView {
     // MARK: - Properties
     private let viewModel: SearchViewModel
 
+    private lazy var collectionViewDelegate: ComicCollectionViewDataSource = {
+        let comicCollectionViewDataSource = ComicCollectionViewDataSource()
+        comicCollectionViewDataSource.delegate = self
+        return comicCollectionViewDataSource
+    }()
+
     // MARK: - UI Properties
     private let spinner: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(style: .large)
@@ -33,33 +39,19 @@ final class SearchView: UIView {
         return view
     }()
 
-    private let noResultsView: NoSearchResultsView = {
-        let view = NoSearchResultsView()
+    private let noResultsView: NoResultsView = {
+        let view = NoResultsView(viewModel: .init(type: .search))
         view.isHidden = true
         view.alpha = 0
         return view
     }()
 
-    private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.sectionInset = .init(top: 0, left: 16, bottom: 0, right: 16)
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    private lazy var collectionView: ComicCollectionView = {
+        let view = ComicCollectionView()
         view.isHidden = true
         view.alpha = 0
-        view.allowsSelection = true
-        view.allowsMultipleSelection = false
-        view.register(
-            ComicCollectionViewCell.self,
-            forCellWithReuseIdentifier: ComicCollectionViewCell.identifier
-        )
-        view.register(
-            FooterLoadingCollectionReusableView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: FooterLoadingCollectionReusableView.identifier
-        )
-        view.delegate = self
-        view.dataSource = self
+        view.delegate = collectionViewDelegate
+        view.dataSource = collectionViewDelegate
         view.keyboardDismissMode = .onDrag
         return view
     }()
@@ -151,13 +143,6 @@ extension SearchView: UITextFieldDelegate {
 // MARK: - SearchViewModelDelegate
 extension SearchView: SearchViewModelDelegate {
     func loadedComics() {
-//        collectionView.isHidden = viewModel.cellViewModels.isEmpty
-//        noResultsView.isHidden = !viewModel.cellViewModels.isEmpty
-//        UIView.animate(withDuration: 0.5) { [weak self] in
-//            guard let self else { return }
-//            self.collectionView.alpha = self.viewModel.cellViewModels.isEmpty ? 0 : 1
-//            self.noResultsView.alpha = self.viewModel.cellViewModels.isEmpty ? 1 : 0
-//        }
         collectionView.reloadData()
     }
 
@@ -196,6 +181,7 @@ extension SearchView: SearchViewModelDelegate {
         collectionView.isHidden = !showCollectionView
         spinner.isHidden = !showSpinner
         noResultsView.isHidden = !showNoResults
+
         UIView.animate(withDuration: 0.5) {
             self.collectionView.alpha = showCollectionView ? 1 : 0
             self.spinner.alpha = showSpinner ? 1 : 0
@@ -204,81 +190,23 @@ extension SearchView: SearchViewModelDelegate {
     }
 }
 
-// MARK: - UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
-extension SearchView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.cellViewModels.count
+// MARK: - ComicCollectionViewDataSourceProtocol
+extension SearchView: ComicCollectionViewDataSourceProtocol {
+    func didSelectComic(at index: Int) { }
+
+    func shouldFetchMoreData() {
+        viewModel.fetchAdditionalComics()
     }
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ComicCollectionViewCell.identifier,
-            for: indexPath
-        ) as? ComicCollectionViewCell else {
-            return .init()
-        }
-        let cellViewModel = viewModel.cellViewModels[indexPath.item]
-        cell.configure(with: cellViewModel)
-        return cell
+    func showLoadMore() -> Bool {
+        viewModel.showLoadMore
     }
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        let bounds = collectionView.bounds
-        let width = (bounds.width - 42) / 2
-        return .init(
-            width: width,
-            height: width * 1.5
-        )
+    func isLoadingMore() -> Bool {
+        viewModel.isLoadingMore
     }
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        guard kind == UICollectionView.elementKindSectionFooter else {
-            return UICollectionReusableView()
-        }
-
-        let footer = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: FooterLoadingCollectionReusableView.identifier,
-            for: indexPath)
-
-        return footer
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForFooterInSection section: Int
-    ) -> CGSize {
-        guard viewModel.showLoadMore else {
-            return .zero
-        }
-        return .init(width: collectionView.frame.width, height: 100)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        delegate?.didSelectComic(at: indexPath.item)
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard viewModel.showLoadMore,
-              !viewModel.isLoadingMore else { return }
-        let yOffset = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        let scrollViewFixedHeight = scrollView.frame.size.height
-
-        if yOffset >= (contentHeight - scrollViewFixedHeight - 120) {
-            viewModel.fetchAdditionalComics()
-        }
+    func cellViewModels() -> [ComicCollectionViewCellViewModel] {
+        viewModel.cellViewModels
     }
 }
