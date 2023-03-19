@@ -9,14 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6E2E6C9F29C383E300ABFB8B"
-               BuildableName = "MarvelApp.app"
-               BlueprintName = "MarvelApp"
+               BlueprintIdentifier = "6EAEA5CE29C7C67300932C31"
+               BuildableName = "StorageTests.xctest"
+               BlueprintName = "StorageTests"
                ReferencedContainer = "container:MarvelApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,27 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6E99BB7429C7B5580074608A"
-               BuildableName = "MarvelAppTests.xctest"
-               BlueprintName = "MarvelAppTests"
-               ReferencedContainer = "container:MarvelApp.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ServiceTests"
-               BuildableName = "ServiceTests"
-               BlueprintName = "ServiceTests"
-               ReferencedContainer = "container:Service">
-            </BuildableReference>
-         </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
@@ -71,16 +50,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6E2E6C9F29C383E300ABFB8B"
-            BuildableName = "MarvelApp.app"
-            BlueprintName = "MarvelApp"
-            ReferencedContainer = "container:MarvelApp.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -88,16 +57,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6E2E6C9F29C383E300ABFB8B"
-            BuildableName = "MarvelApp.app"
-            BlueprintName = "MarvelApp"
+            BlueprintIdentifier = "6EAEA5CE29C7C67300932C31"
+            BuildableName = "StorageTests.xctest"
+            BlueprintName = "StorageTests"
             ReferencedContainer = "container:MarvelApp.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
