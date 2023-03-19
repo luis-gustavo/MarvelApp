@@ -66,11 +66,11 @@ private extension AppRouter {
 
     func showCheckout(comics: [Comic]) {
         let alertController = UIAlertController(
-            title: "Checkout",
-            message: "Not developed since it's not in the scope of the challenge =)",
+            title: Localizable.checkout.localized,
+            message: Localizable.checkoutMessage.localized,
             preferredStyle: .alert
         )
-        alertController.addAction(.init(title: "Ok", style: .default))
+        alertController.addAction(.init(title: Localizable.okMessage.localized, style: .default))
         comicDetailContext?.present(alertController, animated: true)
     }
 }

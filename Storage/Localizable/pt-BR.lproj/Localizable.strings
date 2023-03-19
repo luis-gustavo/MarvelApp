@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  MarvelApp
+
+  Created by Luis Gustavo on 19/03/23.
+  
+*/
+
+"CONNECTION_CREATION_ERROR" = "Erro ao criar conexão: %@";
+"INSERTION_ERROR" = "Erro ao inserir: %@";
+"SELECTION_ERROR" = "Erro ao selecionar: %@";
+"TABLE_CREATION_ERROR" = "Erro ao criar tabela: %@";
+"UNKNOWN_ERROR" = "Erro desconhecido: %@";

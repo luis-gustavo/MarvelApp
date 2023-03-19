@@ -16,11 +16,16 @@ public enum StorageError: Error, CustomStringConvertible {
 
     public var description: String {
         switch self {
-        case .connectionCreation(let error): return "Connection creation: \(error)"
-        case .tableCreation(let error): return "Table creation: \(error)"
-        case .insertion(let error): return "Insertion: \(error)"
-        case .selection(let error): return "Selection: \(error)"
-        case .unknown(let error): return "Unknown: \(error)"
+        case .connectionCreation(let error):
+            return Localizable.connectionCreationError(error).localized
+        case .tableCreation(let error):
+            return Localizable.tableCreationError(error).localized
+        case .insertion(let error):
+            return Localizable.insertionError(error).localized
+        case .selection(let error):
+            return Localizable.selectionError(error).localized
+        case .unknown(let error):
+            return Localizable.unknownError(error).localized
         }
     }
 }

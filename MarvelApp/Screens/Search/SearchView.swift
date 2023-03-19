@@ -27,7 +27,7 @@ final class SearchView: UIView {
 
     private lazy var searchBar: UISearchBar = {
         let view = UISearchBar()
-        view.placeholder = "Search"
+        view.placeholder = Localizable.search.localized
         view.becomeFirstResponder()
         view.returnKeyType = .search
         view.delegate = self
@@ -104,7 +104,6 @@ extension SearchView: UISearchBarDelegate {
 // MARK: - UITextFieldDelegate
 extension SearchView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        viewModel.fetchComics()
         textField.resignFirstResponder()
         return false
     }

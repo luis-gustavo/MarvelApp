@@ -19,6 +19,7 @@ public struct URLSessionNetworking: URLSessionNetworkingProtocol {
     // MARK: - NetworkLayerProtocol
     @available(iOS 13.0, *)
     public func request(endPoint: EndPoint) -> AnyPublisher<NetworkResponse, NetworkError> {
+
         guard let url = endPoint.url else {
             return Fail(error: NetworkError.unableToCreateURL).eraseToAnyPublisher()
         }
@@ -72,6 +73,7 @@ public struct URLSessionNetworking: URLSessionNetworkingProtocol {
     }
 
     public func request(endPoint: EndPoint, _ completion: @escaping (Result<NetworkResponse, NetworkError>) -> Void) {
+
         guard let url = endPoint.url else {
             completion(.failure(NetworkError.unableToCreateURL))
             return
@@ -93,11 +95,18 @@ public struct URLSessionNetworking: URLSessionNetworkingProtocol {
                 return
             }
 
-            guard let statusCode = HTTPStatusCode(rawValue: httpResponse.statusCode) else { completion(.failure(.unknownStatusCode(httpResponse.statusCode)))
+            guard let statusCode = HTTPStatusCode(
+                rawValue: httpResponse.statusCode
+            ) else { completion(.failure(.unknownStatusCode(httpResponse.statusCode)))
                 return
             }
 
-            completion(.success(.init(data: data ?? Data(), status: statusCode, response: httpResponse, request: request)))
+            completion(.success(.init(
+                data: data ?? Data(),
+                status: statusCode,
+                response: httpResponse,
+                request: request
+            )))
         }
         dataTask.resume()
     }

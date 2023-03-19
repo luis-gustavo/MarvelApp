@@ -50,7 +50,7 @@ extension FavoritesView: ViewCodable {
             resultsView.topAnchor.constraint(equalTo: topAnchor),
             resultsView.leadingAnchor.constraint(equalTo: leadingAnchor),
             resultsView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            resultsView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            resultsView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
 

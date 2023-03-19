@@ -16,9 +16,9 @@ struct Price: Codable {
         var title: String {
             switch self {
             case .printPrice:
-                return "Price"
+                return Localizable.price.localized
             case .digitalPurchasePrice:
-                return "Digital Price"
+                return Localizable.digitalPrice.localized
             }
         }
     }

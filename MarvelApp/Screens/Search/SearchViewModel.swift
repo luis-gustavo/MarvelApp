@@ -38,13 +38,21 @@ final class SearchViewModel {
     }
     private(set) var isLoadingMore = false
     private let provider = ComicProvider()
-    private var searchText = ""
+    private var searchText = "" {
+        didSet {
+            timer?.invalidate()
+            timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { [weak self] _ in
+                self?.fetchComics()
+            })
+        }
+    }
     private var year: Int?
     private var offset = 0
     private var count = 0
     private var total = 0
     private let limit = 20
     private var comics = [Comic]()
+    private var timer: Timer?
     var showLoadMore: Bool {
         offset + count < total
     }
@@ -78,9 +86,11 @@ extension SearchViewModel {
             guard let self else { return }
             switch result {
             case let .success(success):
-                for item in success.data.results where !self.comics.contains(item) {
-                    self.comics.append(item)
-                }
+//                self.comics.removeAll()
+//                for item in success.data.results where !self.comics.contains(item) {
+//                    self.comics.append(item)
+//                }
+                self.comics = success.data.results
                 if success.data.results.isEmpty {
                     DispatchQueue.main.async {
                         self.cleanQueryParameters()

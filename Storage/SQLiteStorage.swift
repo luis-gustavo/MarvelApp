@@ -82,11 +82,11 @@ public final class SQLiteStorage: Storage {
 
     public func read(from table: StorageTable) -> Swift.Result<[Row<Int>], StorageError> {
         switch connection {
-        case let .success(db):
+        case let .success(database):
             switch table {
             case .cart:
                 do {
-                    let rows =  try db.prepare(cartTable).map { row -> Row<Int> in
+                    let rows =  try database.prepare(cartTable).map { row -> Row<Int> in
                         let result = Row<Int>(model: row[comicIdExpression], updatedAt: row[updatedAtExpression])
                         return result
                     }
@@ -96,7 +96,7 @@ public final class SQLiteStorage: Storage {
                 }
             case .favorite:
                 do {
-                    let rows =  try db.prepare(favoritesTable).map { row -> Row<Int> in
+                    let rows =  try database.prepare(favoritesTable).map { row -> Row<Int> in
                         let result = Row<Int>(model: row[comicIdExpression], updatedAt: row[updatedAtExpression])
                         return result
                     }
@@ -142,4 +142,8 @@ private func createConnection(_ location: Connection.Location) -> Swift.Result<C
     } catch {
         return .failure(StorageError.connectionCreation(error))
     }
+}
+
+enum MyError: Error {
+    case meuErro
 }

@@ -15,7 +15,7 @@ final class ComicDetailViewModel {
     var title: String { comic.title }
     var imageUrl: URL? { comic.thumbnail.url }
     var price: String { comic.prices.map { "\($0.typeTitle): $\($0.price)" }.joined(separator: "\n") }
-    var issue: String { "Issue #\(comic.issueNumber)" }
+    var issue: String { "\(Localizable.issue.localized) #\(comic.issueNumber)" }
     var isFavorited: Bool {
         favorites().contains(comic.id)
     }

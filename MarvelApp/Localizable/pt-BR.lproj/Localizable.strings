@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  MarvelApp
+
+  Created by Luis Gustavo on 19/03/23.
+  
+*/
+
+"BUY" = "Comprar";
+"CART" = "Carrinho";
+"CHECKOUT" = "Checkout";
+"CHECKOUT_MESSAGE" = "Não foi desenvolvido pois não estava no escopo do desafio =)";
+"COMICS" = "Quadrinhos";
+"DIGITAL_PRICE" = "Preço Digital";
+"EMAIL" = "Email";
+"FAVORITES" = "Favoritos";
+"ISSUE" = "Edição";
+"LOGIN" = "Login";
+"OK" = "Ok";
+"PASSWORD" = "Senha";
+"PRICE" = "Preço";
+"REMOVE_FILTER" = "Remover Filtro";
+"SEARCH" = "Pesquisar";

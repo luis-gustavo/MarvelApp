@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  
+
+  Created by Luis Gustavo on 19/03/23.
+  
+*/
+
+"DATA_MUST_EXIST" = "O dado precisa existir";
+"NOT_HTTP_URL_RESPONSE" = "Não é uma resposta HTTP URL";
+"UNABLE_TO_CREATE_QUERY_PARAMETERS" = "Não foi possível criar os parâmetros de consulta";
+"UNABLE_TO_CREATE_URL" = "Não foi possível criar a URL";
+"UNKNOWN_STATUS_CODE" = "Código de status desconhecido";

@@ -34,7 +34,7 @@ final class CartView: UIView {
         let button = UIButton()
         button.backgroundColor = .systemRed
         button.setTitleColor(.label, for: .normal)
-        button.setTitle("Buy", for: .normal)
+        button.setTitle(Localizable.buy.localized, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
         button.addAction(UIAction { [weak self]  _ in
             self?.viewModel.proceedToCheckout()
