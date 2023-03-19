@@ -2,10 +2,34 @@ import XCTest
 @testable import Service
 
 final class ServiceTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(Service().text, "Hello, World!")
+
+    private let services = Services.default
+
+    func testCreatingService() throws {
+
+        // Given
+        services.register(MockService.self) { MockService.one }
+
+        // When
+        let retrievedService: MockService = services.make(for: MockService.self)
+
+        // Then
+        XCTAssert(retrievedService == MockService.one)
     }
+
+    func testComparingDifferentServices() throws {
+
+        // Given
+        services.register(MockService.self) { MockService.one }
+
+        // When
+        let retrievedService: MockService = services.make(for: MockService.self)
+
+        // Then
+        XCTAssert(retrievedService != MockService.two)
+    }
+}
+
+private enum MockService {
+    case one, two
 }
