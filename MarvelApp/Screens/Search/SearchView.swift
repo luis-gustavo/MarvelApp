@@ -104,7 +104,6 @@ extension SearchView: UISearchBarDelegate {
 // MARK: - UITextFieldDelegate
 extension SearchView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        viewModel.fetchComics()
         textField.resignFirstResponder()
         return false
     }

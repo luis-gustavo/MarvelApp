@@ -30,6 +30,7 @@ final class ResultsView: UIView {
         view.dataSource = collectionViewDelegate
         view.isHidden = true
         view.alpha = 0
+        view.keyboardDismissMode = .onDrag
         return view
     }()
 

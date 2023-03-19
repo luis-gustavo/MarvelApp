@@ -48,11 +48,18 @@ private extension SearchViewController {
         var options = (1939...2023).map { "\($0)" }
         options = options.reversed()
         options.insert(Localizable.removeFilter.localized, at: 0)
-        let elements = options.map({ option in
+        let elements = options.map { option in
             return UIAction(title: option) { [weak self] _ in
+                if option == Localizable.removeFilter.localized {
+                    self?.navigationItem.rightBarButtonItem?.title = nil
+                    self?.navigationItem.rightBarButtonItem?.image = .init(systemName: "calendar")
+                } else {
+                    self?.navigationItem.rightBarButtonItem?.image = nil
+                    self?.navigationItem.rightBarButtonItem?.title = option
+                }
                 self?.viewModel.updateYear(Int(option))
             }
-        })
+        }
         return UIMenu(title: "", children: elements)
     }
 }
