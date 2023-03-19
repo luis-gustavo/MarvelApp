@@ -10,28 +10,54 @@ import UIKit
 final class TabBarController: UITabBarController {
 
     // MARK: - Properties
-    private let viewFactory: AppRouterProtocol
+    private let appRouter: AppRouterProtocol
+
+    // View Controllers
     private(set) lazy var comicListViewController: ComicListViewController = {
-        let viewController = ComicListViewController(viewModel: .init(router: viewFactory))
+        let viewController = ComicListViewController(viewModel: .init(router: appRouter))
         viewController.navigationItem.largeTitleDisplayMode = .automatic
         return viewController
     }()
+    
+    private lazy var cartViewController: CartViewController = {
+        let viewController = CartViewController(viewModel: .init(router: appRouter))
+        viewController.navigationItem.largeTitleDisplayMode = .automatic
+        return viewController
+    }()
+
+    // Navigation Controllers
     private(set) lazy var comicListNavigationController: UINavigationController = {
         let navigationController = UINavigationController(rootViewController: comicListViewController)
         navigationController.navigationBar.prefersLargeTitles = true
         navigationController.tabBarItem = UITabBarItem(
             title: TabBarPage.comics.title,
             image: TabBarPage.comics.image,
-            tag: 1
+            tag: TabBarPage.comics.tag
+        )
+        return navigationController
+    }()
+    private(set) lazy var cartNavigationController: UINavigationController = {
+        let navigationController = UINavigationController(rootViewController: cartViewController)
+        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.tabBarItem = UITabBarItem(
+            title: TabBarPage.cart.title,
+            image: TabBarPage.cart.image,
+            tag: TabBarPage.cart.tag
         )
         return navigationController
     }()
 
     // MARK: - Inits
-    init(viewFactory: AppRouterProtocol) {
-        self.viewFactory = viewFactory
+    init(appRouter: AppRouterProtocol) {
+        self.appRouter = appRouter
         super.init(nibName: nil, bundle: nil)
-        setViewControllers([comicListNavigationController], animated: true)
+        setViewControllers(
+            [
+                comicListNavigationController,
+                cartNavigationController
+            ],
+            animated: true
+        )
     }
 
     required init?(coder: NSCoder) {
