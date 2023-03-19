@@ -32,18 +32,18 @@ public final class SQLiteStorage: Storage {
     // MARK: - Storage
     public func write(ids: [Int], on table: StorageTable) -> Swift.Result<[Int], StorageError> {
         switch connection {
-        case let .success(db):
+        case let .success(database):
             do {
                 try ids.forEach { id in
                     switch table {
                     case .cart:
-                        try db.run(cartTable.insert(
+                        try database.run(cartTable.insert(
                             or: .replace,
                             comicIdExpression <- id,
                             updatedAtExpression <- Date()
                         ))
                     case .favorite:
-                        try db.run(favoritesTable.insert(
+                        try database.run(favoritesTable.insert(
                             or: .replace,
                             comicIdExpression <- id,
                             updatedAtExpression <- Date()
@@ -61,15 +61,15 @@ public final class SQLiteStorage: Storage {
 
     public func delete(id: Int, on table: StorageTable) -> Swift.Result<Int, StorageError> {
         switch connection {
-        case let .success(db):
+        case let .success(database):
             do {
                 switch table {
                 case .cart:
                     let current = cartTable.filter(comicIdExpression == id)
-                    try db.run(current.delete())
+                    try database.run(current.delete())
                 case .favorite:
                     let current = favoritesTable.filter(comicIdExpression == id)
-                    try db.run(current.delete())
+                    try database.run(current.delete())
                 }
                 return .success(id)
             } catch {
@@ -111,12 +111,12 @@ public final class SQLiteStorage: Storage {
     }
 }
 
-fileprivate let favoritesTable = Table(StorageTable.favorite.rawValue)
-fileprivate let cartTable = Table(StorageTable.cart.rawValue)
-fileprivate let comicIdExpression = Expression<Int>("comic_id")
-fileprivate let updatedAtExpression = Expression<Date>("updated_at")
+private let favoritesTable = Table(StorageTable.favorite.rawValue)
+private let cartTable = Table(StorageTable.cart.rawValue)
+private let comicIdExpression = Expression<Int>("comic_id")
+private let updatedAtExpression = Expression<Date>("updated_at")
 
-fileprivate func createSchema(at connection: Connection) -> Swift.Result<Connection, StorageError> {
+private func createSchema(at connection: Connection) -> Swift.Result<Connection, StorageError> {
 
     do {
         try connection.run(favoritesTable.create(ifNotExists: true) { builder in
@@ -135,7 +135,7 @@ fileprivate func createSchema(at connection: Connection) -> Swift.Result<Connect
     return .success(connection)
 }
 
-fileprivate func createConnection(_ location: Connection.Location) -> Swift.Result<Connection, StorageError> {
+private func createConnection(_ location: Connection.Location) -> Swift.Result<Connection, StorageError> {
     do {
         let connection = try Connection(location)
         return .success(connection)

@@ -24,7 +24,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = appRouter.rootViewController
         window.makeKeyAndVisible()
-        appRouter.showTabBar()
+        appRouter.showLogin()
         self.window = window
     }
 
@@ -35,6 +35,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         Services.register(URLSessionNetworkingProtocol.self) { URLSessionNetworking.shared }
         Services.register(ImageLoaderProtocol.self) { ImageLoader.shared }
+        Services.register(LoginProviderProtocol.self) { LoginProvider.shared }
     }
 }
 
