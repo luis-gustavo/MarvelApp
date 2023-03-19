@@ -22,7 +22,7 @@ final class AppRouter: AppRouterProtocol {
     }
 
     // MARK: - ViewFactory
-    func showTabBar() {
+    func showMainView() {
         let tabBarController = TabBarController(appRouter: self)
         comicListNavigationViewController = tabBarController.comicListNavigationController
         cartNavigationViewController = tabBarController.cartNavigationController
