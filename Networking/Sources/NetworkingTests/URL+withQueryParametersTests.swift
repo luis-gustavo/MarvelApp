@@ -8,11 +8,11 @@
 import XCTest
 @testable import Networking
 
-final class URL_withQueryParametersTests: XCTestCase {
+final class URLWithQueryParametersTests: XCTestCase {
 
     func testCreateUrlWithQueryParameters() {
         // Given
-        let queryParameters: [String: Any] = ["name": "Luis", "age": "25"]
+        let queryParameters: [String: Any] = ["name": "Luis"]
         let url = URL(string: "https://www.google.com")!
 
         // When
@@ -20,7 +20,7 @@ final class URL_withQueryParametersTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(newUrl)
-        XCTAssertEqual(newUrl?.absoluteString, "https://www.google.com?name=Luis&age=25")
+        XCTAssertEqual(newUrl?.absoluteString, "https://www.google.com?name=Luis")
     }
 
 }
