@@ -42,10 +42,10 @@ final class ComicListView: UIView {
     // MARK: - Inits
     init(viewModel: ComicListViewModel) {
         self.viewModel = viewModel
-        self.viewModel.fetchComics()
         super.init(frame: .zero)
         setupViewConfiguration()
         self.viewModel.delegate = self
+        self.viewModel.fetchComics()
     }
 
     required init?(coder: NSCoder) {

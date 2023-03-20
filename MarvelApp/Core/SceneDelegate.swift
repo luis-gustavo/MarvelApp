@@ -20,7 +20,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        registerServices()
+//        registerServices()
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = appRouter.rootViewController
         window.makeKeyAndVisible()
@@ -28,15 +28,15 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
     }
 
-    private func registerServices() {
-        Services.register(Storage.self) { () -> SQLiteStorage in
-            let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-            return SQLiteStorage(.uri("\(path)/db.sqlite3"))
-        }
-        Services.register(URLSessionNetworkingProtocol.self) { URLSessionNetworking.shared }
-        Services.register(ImageLoaderProtocol.self) { ImageLoader.shared }
-        Services.register(LoginProviderProtocol.self) { LoginProvider.shared }
-    }
+//    private func registerServices() {
+//        Services.register(Storage.self) { () -> SQLiteStorage in
+//            let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+//            return SQLiteStorage(.uri("\(path)/db.sqlite3"))
+//        }
+//        Services.register(URLSessionNetworkingProtocol.self) { URLSessionNetworking.shared }
+//        Services.register(ImageLoaderProtocol.self) { ImageLoader.shared }
+//        Services.register(LoginProviderProtocol.self) { LoginProvider.shared }
+//    }
 }
 
 private enum AppRoot {

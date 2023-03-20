@@ -5,49 +5,94 @@
 //  Created by Luis Gustavo on 19/03/23.
 //
 
-//import Foundation
 import XCTest
+import Foundation
 @testable import Networking
 
 final class URLSessionNetworkingTests: XCTestCase {
 
-    func testExample()  {
+    private let mock = MockUrlSessionNetworking()
+
+    func testSuccessfulRequest() {
         // Given
-        let endpoint = MockEndpoint.mock
+        let expectation = expectation(description: "successful request")
+        let endpoint = MockEndpoint.correct
 
         // When
-        URLSessionNetworking.shared.request(endPoint: endpoint) { result in
+        mock.request(endPoint: endpoint) { result in
             switch result {
             case let .success(response):
-                let mocked = try? JSONDecoder().decode(Mock.self, from: response.data)
-                XCTAssertNotNil(mocked)
-                XCTAssertEqual(mocked?.age, 25)
-                XCTAssertEqual(mocked?.name, "Luis")
+                XCTAssertEqual(endpoint.createRequest(), response.request)
+                expectation.fulfill()
             case .failure:
-                XCTFail()
+                XCTFail("It shouldn't fail")
             }
+        }
+
+        // Then
+        wait(for: [expectation], timeout: 1)
+    }
+
+    func testErrorRequest() {
+        // Given
+        let expectation = expectation(description: "successful request")
+        let endpoint = MockEndpoint.wrong
+
+        // When
+        mock.request(endPoint: endpoint) { result in
+            switch result {
+            case . success:
+                XCTFail("It should generate an error fail")
+            case let .failure(error):
+                XCTAssertEqual(error, .unableToCreateURL)
+                expectation.fulfill()
+            }
+        }
+
+        // Then
+        wait(for: [expectation], timeout: 1)
+    }
+}
+
+private final class MockUrlSessionNetworking: URLSessionNetworkingProtocol {
+    func request(
+        endPoint: Networking.EndPoint,
+        _ completion: @escaping (Result<Networking.NetworkResponse, Networking.NetworkError>) -> Void
+    ) {
+        if let request = endPoint.createRequest() {
+            completion(.success(.init(
+                data: Data(),
+                status: .okResponse,
+                response: .init(),
+                request: request
+            )))
+        } else {
+            completion(.failure(.unableToCreateURL))
         }
     }
 }
 
 private enum MockEndpoint: EndPoint {
-    case mock
+    case correct, wrong
 
     var url: URL? {
-        let bundle = Bundle.module
-        let fileURL = bundle.url(forResource: "person", withExtension: "json")!
-        return fileURL
+        switch self {
+        case .correct:
+            return .init(string: "https://www.google.com")
+        case .wrong:
+            return nil
+        }
     }
 
     var method: Networking.HTTPMethod {
         .get
     }
 
-    var headers: [String : String] {
+    var headers: [String: String] {
         [:]
     }
 
-    var queryParameters: [String : Any] {
+    var queryParameters: [String: Any] {
         [:]
     }
 

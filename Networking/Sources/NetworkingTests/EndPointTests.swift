@@ -11,7 +11,7 @@ import XCTest
 
 final class EndpointTests: XCTestCase {
 
-    func testCreateRequest()  {
+    func testCreateRequest() {
         // Given
         let endpoint = MockEndpoint.mocked
 
@@ -38,11 +38,11 @@ private enum MockEndpoint: EndPoint {
         .get
     }
 
-    var headers: [String : String] {
+    var headers: [String: String] {
         ["Authorization": "token"]
     }
 
-    var queryParameters: [String : Any] {
+    var queryParameters: [String: Any] {
         ["name": "Luis"]
     }
 

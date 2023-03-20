@@ -20,7 +20,7 @@ final class SearchView: UIView {
 
     // MARK: - UI Properties
     private lazy var resultsView: ResultsView = {
-        let view = ResultsView(viewModel: .init(noResultsType: .cart))
+        let view = ResultsView(viewModel: .init(noResultsType: .search))
         view.collectionViewDelegate.delegate = self
         return view
     }()

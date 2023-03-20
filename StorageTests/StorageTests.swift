@@ -27,7 +27,7 @@ final class StorageTests: XCTestCase {
             // Then
             XCTAssertEqual(response, ids)
         case .failure:
-            XCTFail()
+            XCTFail("Failed to write")
         }
     }
 
@@ -46,10 +46,10 @@ final class StorageTests: XCTestCase {
                 let writtenIds = rows.map { $0.model }
                 XCTAssertEqual(ids, writtenIds)
             case .failure:
-                XCTFail()
+                XCTFail("Failed to read")
             }
         case .failure:
-            XCTFail()
+            XCTFail("Failed to write")
         }
     }
 
@@ -70,13 +70,13 @@ final class StorageTests: XCTestCase {
                     let writtenIds = rows.map { $0.model }
                     XCTAssertEqual([2, 3], writtenIds)
                 case .failure:
-                    XCTFail()
+                    XCTFail("Failed to read")
                 }
             case .failure:
-                XCTFail()
+                XCTFail("Failed to delete")
             }
         case .failure:
-            XCTFail()
+            XCTFail("Failed to write")
         }
     }
 }

@@ -10,6 +10,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "Networking",
+            type: .dynamic,
             targets: ["Networking"])
     ],
     dependencies: [
@@ -24,7 +25,6 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "NetworkingTests",
-            dependencies: ["Networking"],
-            resources: [.process("person.json")])
+            dependencies: ["Networking"])
     ]
 )

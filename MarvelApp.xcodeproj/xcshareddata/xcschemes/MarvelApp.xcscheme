@@ -28,20 +28,6 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ServiceTests"
-               BuildableName = "ServiceTests"
-               BlueprintName = "ServiceTests"
-               ReferencedContainer = "container:Service">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "NetworkingTests"
                BuildableName = "NetworkingTests"
                BlueprintName = "NetworkingTests"
@@ -80,20 +66,21 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ServiceTests"
-               BuildableName = "ServiceTests"
-               BlueprintName = "ServiceTests"
-               ReferencedContainer = "container:Service">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "NetworkingTests"
                BuildableName = "NetworkingTests"
                BlueprintName = "NetworkingTests"
                ReferencedContainer = "container:Networking">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6E33C7C529C89D50008AC914"
+               BuildableName = "ServiceTests.xctest"
+               BlueprintName = "ServiceTests"
+               ReferencedContainer = "container:MarvelApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

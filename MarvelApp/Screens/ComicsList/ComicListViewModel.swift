@@ -99,6 +99,7 @@ extension ComicListViewModel {
     }
 
     func showComicDetail(at index: Int) {
+        guard index < comics.count else { return }
         let comic = comics[index]
         router.showComicDetail(router, comic: comic)
     }

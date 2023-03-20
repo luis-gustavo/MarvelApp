@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  MarvelApp
+
+  Created by Luis Gustavo on 20/03/23.
+  
+*/
+
+"SERVICE_WASNT_PREVIOUSLY_REGISTERED" = "Service %@ wasn't previously registered";
+"SERVICE_CANT_BE_DOWNCASTED" = "Service %@ can't be downcasted to %@";
