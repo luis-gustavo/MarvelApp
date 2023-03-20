@@ -13,4 +13,9 @@ struct Image: Codable {
     var url: URL? { URL(string: "\(path).\(`extension`)") }
     private let path: String
     private let `extension`: String
+
+    init(path: String, extension: String) {
+        self.path = path
+        self.`extension` = `extension`
+    }
 }

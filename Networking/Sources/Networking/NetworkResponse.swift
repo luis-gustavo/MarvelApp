@@ -16,7 +16,7 @@ public struct NetworkResponse: Hashable {
     public let request: URLRequest
 
     // MARK: - Inits
-    init(data: Data, status: HTTPStatusCode, response: HTTPURLResponse, request: URLRequest) {
+    public init(data: Data, status: HTTPStatusCode, response: HTTPURLResponse, request: URLRequest) {
         self.data = data
         self.status = status
         self.response = response

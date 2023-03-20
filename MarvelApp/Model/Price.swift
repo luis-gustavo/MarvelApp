@@ -29,4 +29,9 @@ struct Price: Codable {
     }
     let price: Float
     private let type: String
+
+    init(price: Float, type: String) {
+        self.price = price
+        self.type = type
+    }
 }
