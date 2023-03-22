@@ -60,6 +60,7 @@
 		6E33C7FB29C8C842008AC914 /* CartViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E33C7FA29C8C842008AC914 /* CartViewControllerTests.swift */; };
 		6E33C7FD29C8C87F008AC914 /* MockCartRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E33C7FC29C8C87F008AC914 /* MockCartRouter.swift */; };
 		6E33C7FF29C8CA40008AC914 /* CartViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E33C7FE29C8CA40008AC914 /* CartViewModelTests.swift */; };
+		6E33C80029C8E501008AC914 /* Networking in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 6E2E6CBD29C390BC00ABFB8B /* Networking */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		6E3769E529C463D70072B818 /* ComicCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3769E429C463D70072B818 /* ComicCollectionViewCellViewModel.swift */; };
 		6E3769E729C4694E0072B818 /* Comic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3769E629C4694E0072B818 /* Comic.swift */; };
 		6E3769E929C4697D0072B818 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3769E829C4697D0072B818 /* Image.swift */; };
@@ -176,6 +177,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				6E33C80029C8E501008AC914 /* Networking in Embed Frameworks */,
 				6E33C7E629C89DF5008AC914 /* Service.framework in Embed Frameworks */,
 				6E17520229C641D3009F26D3 /* Storage.framework in Embed Frameworks */,
 			);
